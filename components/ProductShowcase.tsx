@@ -16,7 +16,7 @@ const sections = [
     tags: ["Personal Identity Vaults", "End-to-End Encryption", "Private Document Chat"],
     buttonText: "Explore User Vaults",
     icon: Shield,
-    video: "/USERSIDE (1).mp4"
+    video: "/userside.mp4"
   },
   {
     role: "FOR AI AGENTS",
@@ -26,7 +26,7 @@ const sections = [
     tags: ["Agentic Guardrails", "PII Data Scrubbing", "Isolated Context Windows"],
     buttonText: "See AI in Action",
     icon: Zap,
-    video: "/AIconnect.mp4"
+    video: "/aiconnect.mp4"
   },
   {
     role: "FOR ADMINISTRATORS",
