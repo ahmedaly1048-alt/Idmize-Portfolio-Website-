@@ -76,7 +76,7 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
   const gridColor = isDark ? '#3b82f6' : '#60a5fa';
   const gridOpacity = isDark ? 'opacity-[0.09]' : 'opacity-[0.17]';
   
-  const shadowBlur = isDark ? 'bg-blue-500/20' : 'bg-blue-400/15';
+  const shadowBlur = isDark ? 'bg-blue-500/20' : 'bg-blue-400/15'; // Enhanced shadow
   const imageBg = isDark ? 'bg-black/40' : 'bg-white';
   const imageBorder = isDark ? 'border-white/80' : 'border-blue-500';
   const decorativeBlur = isDark ? 'bg-blue-500/8' : 'bg-blue-400/15';
@@ -87,7 +87,7 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative min-h-screen md:min-h-[85vh] flex items-center overflow-hidden cursor-default transition-colors duration-300 ${bgColor}`}
+      className={`relative min-h-[85vh] flex items-center overflow-hidden cursor-default transition-colors duration-300 ${bgColor}`}
     >
       {/* Animated gradient orbs with mouse tracking */}
       <motion.div 
@@ -116,22 +116,21 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
         className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/3 to-transparent pointer-events-none"
       />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div className="container mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left: Content */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-center lg:text-left"
           >
             {/* Badge */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 mx-auto lg:mx-0 ${badgeBg}`}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 ${badgeBg}`}
             >
               <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-blue-400' : 'text-blue-500'}`} />
               <span className={`text-xs font-medium ${badgeText}`}>
@@ -139,23 +138,23 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
               </span>
             </motion.div>
             
-            <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.2] md:leading-[1.1] tracking-tight ${textColor}`}>
+            <h1 className={`text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight ${textColor}`}>
               AI Governance{' '}
               <span className={isDark ? 'text-blue-400' : 'text-blue-500'}>
                 for the Workplace
               </span>
             </h1>
             
-            <p className={`mt-4 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0 ${textSecondary}`}>
+            <p className={`mt-4 text-base leading-relaxed max-w-md ${textSecondary}`}>
               IDmize provides a secure bridge for enterprise LLMs. 
               Manage identity and mask PII in one compact console.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
+            <div className="mt-8 flex flex-wrap gap-3">
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`group relative rounded-lg px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white shadow-lg transition-all ${buttonPrimary}`}
+                className={`group relative rounded-lg px-6 py-3 text-sm font-medium text-white shadow-lg transition-all ${buttonPrimary}`}
               >
                 Get started free
                 <ArrowRight className="inline-block ml-2 w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -164,14 +163,14 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`rounded-lg px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-all ${buttonSecondary}`}
+                className={`rounded-lg px-6 py-3 text-sm font-medium transition-all ${buttonSecondary}`}
               >
                 Contact sales
               </motion.button>
             </div>
 
             {/* Trust indicators with actual avatar images */}
-            <div className="mt-8 flex items-center gap-4 justify-center lg:justify-start">
+            <div className="mt-8 flex items-center gap-4">
               <div className="flex -space-x-1.5">
                 {avatars.map((avatar, i) => (
                   <div 
@@ -189,19 +188,20 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
             </div>
           </motion.div>
 
-          {/* Right: Image Stack - Responsive */}
+          {/* Right: Image Stack - More prominent */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            className="relative mt-8 lg:mt-0"
+            className="relative"
           >
             {/* Enhanced shadow and glow behind main image */}
-            <div className={`absolute -inset-4 md:-inset-6 rounded-2xl blur-3xl ${shadowBlur}`} />
-            <div className={`absolute -inset-6 md:-inset-8 rounded-full blur-3xl ${decorativeBlur}`} />
+            <div className={`absolute -inset-6 rounded-2xl blur-3xl ${shadowBlur}`} />
+            <div className={`absolute -inset-8 rounded-full blur-3xl ${decorativeBlur}`} />
             
-            {/* Main Console Image */}
-            <div className={`relative rounded-xl overflow-hidden mx-auto md:mx-0 ${imageBg} ${imageGlow}`}>
+            {/* Main Console Image - With enhanced prominence */}
+            <div className={`relative rounded-xl overflow-hidden -left-12 ${imageBg} ${imageGlow}`}>
+              {/* Prominent border with glow */}
               <div className={`absolute inset-0 rounded-xl border-2 shadow-[0_0_30px_rgba(59,130,246,0.4)] z-10 pointer-events-none ${imageBorder}`} />
               <div className="relative w-full" style={{ aspectRatio: '1950/1400' }}>
                 <Image 
@@ -211,20 +211,21 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
                   className="object-fill brightness-105 contrast-105"
                   quality={100}
                   priority
-                  sizes="(max-width: 768px) 90vw, (max-width: 1024px) 70vw, 50vw"
+                  sizes="(max-width: 1024px) 90vw, 50vw"
                 />
               </div>
+              {/* Enhanced accent overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-transparent to-transparent pointer-events-none" />
             </div>
 
-            {/* Floating Card - Hidden on mobile, visible on larger screens */}
+            {/* Floating Card - Enhanced */}
             <motion.div 
               initial={{ opacity: 0, y: 20, x: -20 }}
               animate={{ opacity: 1, y: 0, x: 0 }}
               transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
-              className="absolute -bottom-3 left-10 sm:-bottom-5 sm:-left-16 md:-left-30 lg:-left-48 z-20 hidden sm:block"
+              className="absolute -bottom-5 -left-58 z-20 hidden lg:block"
             >
-              <div className={`relative w-32 sm:w-40 md:w-48 lg:w-52 rounded-lg overflow-hidden ${imageBg} shadow-2xl`}>
+              <div className={`relative w-52 rounded-lg overflow-hidden ${imageBg} shadow-2xl`}>
                 <div className={`absolute inset-0 rounded-lg border-2 shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10 pointer-events-none ${imageBorder}`} />
                 <div className="relative" style={{ aspectRatio: '800/700' }}>
                   <Image 
@@ -239,14 +240,14 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
               </div>
             </motion.div>
 
-            {/* Vertical Overlay - Hidden on mobile, visible on xl screens */}
+            {/* Vertical Overlay - Enhanced */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
-              className="absolute top-1/2 -translate-y-1/2 -right-10 md:-right-12 lg:-right-18 xl:-right-23 z-20 hidden xl:block"
+              className="absolute top-65 -translate-y-1/2 -right-21 z-20 hidden xl:block"
             >
-              <div className={`relative w-24 md:w-28 lg:w-32 xl:w-36 h-56 md:h-64 lg:h-72 xl:h-84 rounded-lg overflow-hidden border-2 ${imageBorder} ${imageBg} shadow-2xl`}>
+              <div className={`relative w-46 h-100 md:w-36 md:h-84 rounded-lg overflow-hidden border-2 ${imageBorder} ${imageBg} shadow-2xl`}>
                 <Image 
                   src="/admind.png"
                   alt="Vertical overlay"
@@ -257,8 +258,8 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
               </div>
             </motion.div>
 
-            {/* Decorative elements */}
-            <div className={`absolute -top-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-full blur-xl ${decorativeBlur}`} />
+            {/* Decorative elements - Enhanced */}
+            <div className={`absolute -top-4 -right-4 w-24 h-24 rounded-full blur-xl ${decorativeBlur}`} />
           </motion.div>
 
         </div>
