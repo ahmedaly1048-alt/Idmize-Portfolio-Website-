@@ -49,7 +49,7 @@ const FeaturesList = ({ theme = 'dark' }: FeaturesListProps) => {
 
   return (
     <section className={`relative py-20 overflow-hidden ${bgColor}`}>
-      {/* Blue Paint Splash Background - Light theme version */}
+      {/* Blue Paint Splash Background */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Main paint splashes */}
         <div className={`absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[80px] animate-pulse-slow ${isDark ? 'bg-blue-500/5' : 'bg-blue-400/8'}`} />
@@ -84,65 +84,69 @@ const FeaturesList = ({ theme = 'dark' }: FeaturesListProps) => {
         <div className={`absolute top-[15%] right-[45%] w-10 h-2 ${isDark ? 'bg-blue-400/50' : 'bg-blue-400/60'}`} />
       </div>
 
-      <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-start relative">
-        
-        {/* Left: Branding - Sticky Content */}
-        <div className="lg:sticky lg:top-32 self-start pt-2">
-          {/* Accent Pixel Block Group */}
-          <div className="flex gap-1 mb-6">
-            <div className={`w-3 h-12 bg-blue-500 ${pixelBlockShadow}`} />
-            <div className={`w-10 h-3 ${isDark ? 'bg-blue-500/50' : 'bg-blue-400/50'}`} />
-          </div>
-
-          <h2 className={`text-4xl md:text-5xl font-extrabold leading-tight tracking-tighter ${textPrimary}`}>
-            Innovate with <br />
-            <span className={`text-transparent bg-clip-text bg-gradient-to-r ${isDark ? 'from-blue-400 to-blue-600' : 'from-blue-500 to-blue-700'} animate-pulse-slow`}>
-              Authority.
-            </span>
-          </h2>
-          <p className={`mt-4 text-base max-w-sm leading-relaxed ${textSecondary}`}>
-            Bridging the gap between rapid AI innovation and global regulatory mandates.
-          </p>
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="flex flex-col lg:flex-row justify-center items-start gap-12">
           
-          {/* Additional decorative block */}
-          <div className={`mt-8 w-20 h-20 flex items-center justify-center rounded-lg ${decorativeBlockBorder}`}>
-             <div className={`w-4 h-4 animate-pulse rounded ${pulseBlockBg}`} />
+          {/* Left: Branding - Sticky Content */}
+          <div className="lg:sticky lg:top-32 self-start pt-2 w-full lg:w-5/12">
+            {/* Accent Pixel Block Group */}
+            <div className="flex gap-1 mb-6">
+              <div className={`w-3 h-12 bg-blue-500 ${pixelBlockShadow}`} />
+              <div className={`w-10 h-3 ${isDark ? 'bg-blue-500/50' : 'bg-blue-400/50'}`} />
+            </div>
+
+            <h2 className={`text-4xl md:text-5xl font-extrabold leading-tight tracking-tighter ${textPrimary}`}>
+              Innovate with <br />
+              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${isDark ? 'from-blue-400 to-blue-600' : 'from-blue-500 to-blue-700'} animate-pulse-slow`}>
+                Authority.
+              </span>
+            </h2>
+            <p className={`mt-4 text-base max-w-sm leading-relaxed ${textSecondary}`}>
+              Bridging the gap between rapid AI innovation and global regulatory mandates.
+            </p>
+            
+            {/* Additional decorative block */}
+            <div className={`mt-8 w-20 h-20 flex items-center justify-center rounded-lg ${decorativeBlockBorder}`}>
+               <div className={`w-4 h-4 animate-pulse rounded ${pulseBlockBg}`} />
+            </div>
           </div>
-        </div>
 
-        {/* Right: Feature List */}
-        <div className="space-y-0">
-          {features.map((feature, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`group relative border rounded-xl p-6 mb-4 transition-all duration-300 ${borderColor} ${cardBorderHover} ${cardBg} ${cardHoverBg}`}
-            >
-              {/* Glow effect on hover */}
-              <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 transition-all duration-500 ${glowEffect}`} />
-              
-              <h3 className={`text-xl md:text-2xl font-bold mb-3 transition-colors ${textPrimary} ${titleHover}`}>
-                {feature.title}
-              </h3>
-              
-              <div className="flex gap-3 items-start">
-                {/* Visual Arrow */}
-                <div className="mt-1.5 flex-shrink-0 flex items-center">
-                   <div className={`w-6 h-[2px] group-hover:w-8 transition-all duration-300 ${arrowColor}`} />
-                   <div className={`w-2 h-2 border-t-2 border-r-2 rotate-45 -ml-0.5 group-hover:translate-x-0.5 transition-all duration-300 ${arrowBorderColor}`} />
-                </div>
-                
-                <p className={`leading-relaxed text-sm transition-colors ${textMuted} ${descriptionHover}`}>
-                  {feature.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          {/* Right: Feature List */}
+          <div className="w-full lg:w-7/12">
+            <div className="space-y-4">
+              {features.map((feature, index) => (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`group relative border rounded-xl p-6 transition-all duration-300 ${borderColor} ${cardBorderHover} ${cardBg} ${cardHoverBg}`}
+                >
+                  {/* Glow effect on hover */}
+                  <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 transition-all duration-500 ${glowEffect}`} />
+                  
+                  <h3 className={`text-xl md:text-2xl font-bold mb-3 transition-colors ${textPrimary} ${titleHover}`}>
+                    {feature.title}
+                  </h3>
+                  
+                  <div className="flex gap-3 items-start">
+                    {/* Visual Arrow */}
+                    <div className="mt-1.5 flex-shrink-0 flex items-center">
+                       <div className={`w-6 h-[2px] group-hover:w-8 transition-all duration-300 ${arrowColor}`} />
+                       <div className={`w-2 h-2 border-t-2 border-r-2 rotate-45 -ml-0.5 group-hover:translate-x-0.5 transition-all duration-300 ${arrowBorderColor}`} />
+                    </div>
+                    
+                    <p className={`leading-relaxed text-sm transition-colors ${textMuted} ${descriptionHover}`}>
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
 
+        </div>
       </div>
 
       <style jsx>{`

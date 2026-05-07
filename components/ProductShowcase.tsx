@@ -16,7 +16,7 @@ const sections = [
     tags: ["Personal Identity Vaults", "End-to-End Encryption", "Private Document Chat"],
     buttonText: "Explore User Vaults",
     icon: Shield,
-    video: "/USERSIDE.mp4"
+    video: "/USERSIDE (1).mp4"
   },
   {
     role: "FOR AI AGENTS",
@@ -47,18 +47,15 @@ const VideoCard = ({ video, theme }: { video: string; theme: 'light' | 'dark' })
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) {
-      // Force autoplay with multiple attempts
       const playVideo = () => {
         videoElement.play().catch(error => {
           console.log("Autoplay failed, retrying:", error);
-          // Retry after a short delay
           setTimeout(() => {
             videoElement.play().catch(e => console.log("Autoplay retry failed:", e));
           }, 100);
         });
       };
       
-      // Ensure video metadata is loaded before playing
       if (videoElement.readyState >= 2) {
         playVideo();
       } else {
@@ -70,7 +67,7 @@ const VideoCard = ({ video, theme }: { video: string; theme: 'light' | 'dark' })
 
   return (
     <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm`}>
-      <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
+      <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
         <video
           ref={videoRef}
           className="w-full h-full object-contain"
@@ -129,7 +126,7 @@ const ProductShowcase = ({ theme = 'dark' }: ProductShowcaseProps) => {
       <div className={`absolute top-0 -left-48 w-80 h-80 rounded-full blur-[120px] ${orb1Bg}`} />
       <div className={`absolute bottom-0 -right-48 w-80 h-80 rounded-full blur-[120px] ${orb2Bg}`} />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Section Header */}
         <motion.div 
@@ -137,7 +134,7 @@ const ProductShowcase = ({ theme = 'dark' }: ProductShowcaseProps) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${badgeBg} mb-4`}>
             <span className={`text-[10px] font-medium uppercase tracking-wide ${badgeText}`}>Solutions</span>
@@ -152,93 +149,95 @@ const ProductShowcase = ({ theme = 'dark' }: ProductShowcaseProps) => {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="w-12 h-0.5 bg-blue-500 mx-auto mt-3"
+            className="w-12 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mt-3"
           />
         </motion.div>
 
-        {/* Product Sections */}
-        {sections.map((section, index) => (
-          <div 
-            key={index} 
-            className={`flex flex-col lg:flex-row items-center gap-8 ${
-              index !== 0 ? 'mt-16' : ''
-            } ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-          >
-            {/* Left Column: Text Content */}
-            <div className="w-full lg:w-[45%]">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5 }}
-              >
-                {/* Role Badge */}
-                <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full ${roleBadgeBg} mb-3`}>
-                  <section.icon className={`w-3 h-3 ${accentText}`} />
-                  <span className={`text-[10px] font-medium uppercase tracking-wide ${roleBadgeText}`}>{section.role}</span>
-                </div>
-
-                <h2 className={`text-2xl md:text-3xl lg:text-4xl font-bold ${titleText} leading-[1.1] tracking-tight mb-2`}>
-                  {section.title} <br />
-                  <span className={`bg-gradient-to-r ${isDark ? 'from-blue-400 to-blue-500' : 'from-blue-500 to-blue-600'} bg-clip-text text-transparent`}>
-                    {section.subtitle}
-                  </span>
-                </h2>
-                
-                <p className={`${descriptionText} text-sm mb-5 leading-relaxed`}>
-                  {section.description}
-                </p>
-
-                {/* Feature Tags */}
-                <div className="flex flex-col gap-1.5 mb-5">
-                  {section.tags.map((tag, i) => (
-                    <motion.div 
-                      key={i} 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className={`group flex items-center justify-between ${tagBg} border-l-2 ${tagBorder} px-3 py-2 w-full max-w-md ${tagHoverBg} transition-all duration-300`}
-                    >
-                      <span className={`${tagText} font-medium text-xs`}>{tag}</span>
-                      <CheckCircle className={`w-3 h-3 ${accentText}`} />
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* CTA Button */}
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`group bg-gradient-to-r ${buttonBg} text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg ${buttonShadow} ${buttonHoverShadow} transition-all duration-300`}
+        {/* Product Sections - Centered with larger videos */}
+        <div className="max-w-6xl mx-auto">
+          {sections.map((section, index) => (
+            <div 
+              key={index} 
+              className={`flex flex-col lg:flex-row items-center justify-center gap-12 ${
+                index !== 0 ? 'mt-24' : ''
+              } ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+            >
+              {/* Left Column: Text Content */}
+              <div className="w-full lg:w-5/12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <span className="text-xs font-semibold tracking-wide uppercase">{section.buttonText}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-              </motion.div>
-            </div>
+                  {/* Role Badge */}
+                  <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full ${roleBadgeBg} mb-3`}>
+                    <section.icon className={`w-3 h-3 ${accentText}`} />
+                    <span className={`text-[10px] font-medium uppercase tracking-wide ${roleBadgeText}`}>{section.role}</span>
+                  </div>
 
-            {/* Right Column: Video Container */}
-            <div className="w-full lg:w-[50%]">
-              <motion.div
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative"
-              >
-                {/* Enhanced glow behind video */}
-                <div className={`absolute -inset-8 rounded-full blur-2xl ${glowBg}`} />
-                <div className={`absolute -inset-4 rounded-full blur-xl ${glowBg2}`} />
-                
-                {/* Video Container */}
-                <div className="relative w-full max-w-[650px] mx-auto">
-                  <VideoCard video={section.video} theme={theme} />
-                </div>
-              </motion.div>
+                  <h2 className={`text-2xl md:text-3xl lg:text-4xl font-bold ${titleText} leading-[1.1] tracking-tight mb-2`}>
+                    {section.title} <br />
+                    <span className={`bg-gradient-to-r ${isDark ? 'from-blue-400 to-blue-500' : 'from-blue-500 to-blue-600'} bg-clip-text text-transparent`}>
+                      {section.subtitle}
+                    </span>
+                  </h2>
+                  
+                  <p className={`${descriptionText} text-sm mb-5 leading-relaxed`}>
+                    {section.description}
+                  </p>
+
+                  {/* Feature Tags */}
+                  <div className="flex flex-col gap-1.5 mb-5">
+                    {section.tags.map((tag, i) => (
+                      <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className={`group flex items-center justify-between ${tagBg} border-l-2 ${tagBorder} px-3 py-2 w-full max-w-md ${tagHoverBg} transition-all duration-300`}
+                      >
+                        <span className={`${tagText} font-medium text-xs`}>{tag}</span>
+                        <CheckCircle className={`w-3 h-3 ${accentText}`} />
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* CTA Button */}
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`group bg-gradient-to-r ${buttonBg} text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg ${buttonShadow} ${buttonHoverShadow} transition-all duration-300`}
+                  >
+                    <span className="text-xs font-semibold tracking-wide uppercase">{section.buttonText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                </motion.div>
+              </div>
+
+              {/* Right Column: Video Container - Larger */}
+              <div className="w-full lg:w-7/12">
+                <motion.div
+                  initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="relative flex justify-center"
+                >
+                  {/* Enhanced glow behind video - Larger */}
+                  <div className={`absolute -inset-10 rounded-full blur-3xl ${glowBg}`} />
+                  <div className={`absolute -inset-6 rounded-full blur-2xl ${glowBg2}`} />
+                  
+                  {/* Video Container - Larger dimensions */}
+                  <div className="relative w-full max-w-[720px]">
+                    <VideoCard video={section.video} theme={theme} />
+                  </div>
+                </motion.div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

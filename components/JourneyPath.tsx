@@ -74,7 +74,8 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
 
   // Theme-specific styles
   const bgColor = isDark ? 'bg-black' : 'bg-gray-50';
-  const gridColor = isDark ? '#3b82f6' : '#93c5fd';
+  const gridColor = isDark ? '#3b82f6' : '#60a5fa';
+  const gridOpacity = isDark ? 'opacity-[0.06]' : 'opacity-[0.08]';
   const pathBgColor = isDark ? '#1e3a5f' : '#bfdbfe';
   const pathActiveColor = isDark ? '#3b82f6' : '#2563eb';
   const orb1Bg = isDark ? 'bg-blue-600/8' : 'bg-blue-400/15';
@@ -82,29 +83,29 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
   const badgeBg = isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm';
   const badgeText = isDark ? 'text-blue-400' : 'text-blue-500';
   const titleText = isDark ? 'text-white' : 'text-gray-900';
-  const cardBg = isDark ? 'bg-white/[0.02]' : 'bg-white';
-  const cardBorderDefault = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  const cardBg = isDark ? 'bg-white/[0.04]' : 'bg-white';
+  const cardBorderDefault = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)';
   const cardBorderActive = isDark ? 'rgba(59,130,246,1)' : 'rgba(37,99,235,1)';
-  const stepNumberBg = isDark ? 'bg-blue-600/10 border-blue-500/20' : 'bg-blue-100 border-blue-300';
+  const stepNumberBg = isDark ? 'bg-blue-600/20 border-blue-500/30' : 'bg-blue-100 border-blue-300';
   const stepNumberText = isDark ? 'text-blue-400' : 'text-blue-600';
-  const iconBg = isDark ? 'from-blue-600/20 to-blue-500/10' : 'from-blue-100 to-blue-50';
+  const iconBg = isDark ? 'from-blue-600/30 to-blue-500/20' : 'from-blue-100 to-blue-50';
   const iconText = isDark ? 'text-blue-400' : 'text-blue-500';
   const headingText = isDark ? 'text-blue-400' : 'text-blue-500';
   const cardTitle = isDark ? 'text-white' : 'text-gray-900';
   const cardTitleHover = isDark ? 'group-hover:text-blue-400' : 'group-hover:text-blue-500';
-  const descriptionText = isDark ? 'text-gray-400' : 'text-gray-600';
-  const highlightBg = isDark ? 'bg-blue-600/10 border-blue-500/20' : 'bg-blue-100 border-blue-300';
+  const descriptionText = isDark ? 'text-gray-300' : 'text-gray-600';
+  const highlightBg = isDark ? 'bg-blue-600/15 border-blue-500/30' : 'bg-blue-100 border-blue-300';
   const highlightText = isDark ? 'text-blue-400' : 'text-blue-600';
   const arrowColor = isDark ? 'text-blue-400' : 'text-blue-500';
   const hoverGlow = isDark 
-    ? 'group-hover:from-blue-500/10 group-hover:via-blue-500/5' 
-    : 'group-hover:from-blue-400/10 group-hover:via-blue-400/5';
+    ? 'group-hover:from-blue-500/15 group-hover:via-blue-500/10' 
+    : 'group-hover:from-blue-400/15 group-hover:via-blue-400/10';
 
   return (
     <section ref={containerRef} className={`relative ${bgColor} py-20 overflow-hidden transition-colors duration-300`}>
       {/* Background Grid Pattern */}
       <div 
-        className={`absolute inset-0 pointer-events-none opacity-[0.06]`}
+        className={`absolute inset-0 pointer-events-none ${gridOpacity}`}
         style={{ 
           backgroundImage: `linear-gradient(${gridColor} 1px, transparent 1px), linear-gradient(90deg, ${gridColor} 1px, transparent 1px)`, 
           backgroundSize: '48px 48px' 
@@ -115,7 +116,7 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
       <div className={`absolute top-20 -left-48 w-96 h-96 rounded-full blur-[140px] ${orb1Bg}`} />
       <div className={`absolute bottom-20 -right-48 w-96 h-96 rounded-full blur-[140px] ${orb2Bg}`} />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
         
         {/* Section Header */}
         <motion.div 
@@ -139,8 +140,8 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
           />
         </motion.div>
 
-        {/* Timeline Layout */}
-        <div className="relative">
+        {/* Timeline Layout - Centered */}
+        <div className="relative max-w-5xl mx-auto">
           {/* Connecting Path SVG */}
           <div className="absolute inset-0 pointer-events-none hidden md:block">
             <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" className="overflow-visible">
@@ -164,21 +165,21 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
             </svg>
           </div>
 
-          {/* Steps */}
-          <div className="space-y-16">
+          {/* Steps - Centered Cards */}
+          <div className="space-y-20">
             {steps.map((step, index) => {
               const isEven = index % 2 === 0;
               
               const opacity = useTransform(
                 activeStepFloat,
                 [index - 0.6, index, index + 0.6],
-                [0.3, 1, 0.3]
+                [0.4, 1, 0.4]
               );
 
               const scale = useTransform(
                 activeStepFloat,
                 [index - 0.6, index, index + 0.6],
-                [0.98, 1.02, 0.98]
+                [0.96, 1.03, 0.96]
               );
 
               const borderColor = useTransform(
@@ -194,17 +195,17 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
                 >
                   <motion.div 
                     style={{ opacity, scale }}
-                    className="group relative w-full md:w-[42%]"
+                    className="group relative w-full md:w-[45%]"
                   >
                     <div className={`absolute -inset-px bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 rounded-xl transition-all duration-500 ${hoverGlow}`} />
                     
                     <motion.div 
                       style={{ borderColor }}
-                      className={`relative ${cardBg} border rounded-xl p-5 backdrop-blur-sm transition-colors duration-500`}
+                      className={`relative ${cardBg} border rounded-xl p-5 backdrop-blur-sm transition-colors duration-500 shadow-lg`}
                     >
                       {/* Step Number */}
-                      <div className="absolute top-3 right-3">
-                        <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-transform group-hover:scale-110 ${stepNumberBg}`}>
+                      <div className="absolute -top-3 -right-3">
+                        <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-transform group-hover:scale-110 ${stepNumberBg}`}>
                           <span className={`text-[10px] font-bold ${stepNumberText}`}>{step.stepNumber}</span>
                         </div>
                       </div>
@@ -224,7 +225,7 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
                       
                       <p className={`${descriptionText} text-xs leading-relaxed mb-2`}>{step.description}</p>
                       
-                      <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border ${highlightBg}`}>
+                      <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border-2 ${highlightBg}`}>
                         <Sparkles className={`w-2 h-2 ${highlightText}`} />
                         <span className={`text-[8px] font-medium uppercase tracking-wider ${highlightText}`}>
                           {step.highlight}
@@ -241,6 +242,21 @@ const JourneyPath = ({ theme = 'dark' }: JourneyPathProps) => {
             })}
           </div>
         </div>
+
+        {/* Bottom Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-center mt-16"
+        >
+          <div className={`inline-flex items-center gap-2 text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+            <span>End-to-end AI governance journey</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

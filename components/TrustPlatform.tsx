@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Zap, Lock, ArrowRight, Sparkles, Database, Cloud, Server, Users, Eye, BarChart, Globe, CheckCircle } from "lucide-react";
 import Image from "next/image";
@@ -49,7 +49,33 @@ const tabs = [
 
 const TrustPlatform = ({ theme = 'dark' }: TrustPlatformProps) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [isAutoSwiping, setIsAutoSwiping] = useState(true);
   const isDark = theme === 'dark';
+
+  // Auto-swipe functionality
+  useEffect(() => {
+    if (!isAutoSwiping) return;
+    
+    const interval = setInterval(() => {
+      setActiveTab((prev) => {
+        const currentIndex = tabs.findIndex(tab => tab.id === prev.id);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        return tabs[nextIndex];
+      });
+    }, 5000); // Change tab every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoSwiping]);
+
+  // Pause auto-swipe when user interacts with tabs
+  const handleTabClick = (tab: typeof tabs[0]) => {
+    setIsAutoSwiping(false);
+    setActiveTab(tab);
+    // Resume auto-swipe after 10 seconds of inactivity
+    setTimeout(() => {
+      setIsAutoSwiping(true);
+    }, 10000);
+  };
 
   // Theme-specific styles
   const bgColor = isDark ? 'bg-black' : 'bg-gray-50';
@@ -120,7 +146,7 @@ const TrustPlatform = ({ theme = 'dark' }: TrustPlatformProps) => {
           {tabs.map((tab) => (
             <div key={tab.id} className="relative">
               <button
-                onClick={() => setActiveTab(tab)}
+                onClick={() => handleTabClick(tab)}
                 className={`
                   relative px-5 py-2 text-[10px] font-medium tracking-[0.2em] transition-all duration-300
                   ${activeTab.id === tab.id ? tabActiveText : tabInactiveText}
@@ -140,6 +166,23 @@ const TrustPlatform = ({ theme = 'dark' }: TrustPlatformProps) => {
           ))}
         </div>
 
+        {/* Auto-swipe Indicator */}
+        <div className="flex justify-center mb-6">
+          <div className="flex gap-1.5">
+            {tabs.map((tab, index) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabClick(tab)}
+                className={`transition-all duration-300 rounded-full ${
+                  activeTab.id === tab.id 
+                    ? 'w-6 h-1.5 bg-blue-500' 
+                    : 'w-1.5 h-1.5 bg-gray-600 hover:bg-gray-500'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Content Grid */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -148,7 +191,7 @@ const TrustPlatform = ({ theme = 'dark' }: TrustPlatformProps) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className="grid lg:grid-cols-2 gap-10 items-center"
+            className="grid lg:grid-cols-2 gap-10 items-center max-w-6xl mx-auto"
           >
             {/* Left Content */}
             <div className="space-y-5">
