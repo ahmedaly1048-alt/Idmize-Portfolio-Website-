@@ -25,8 +25,6 @@ import {
   Cloud,
   Server,
   Brain,
-  Linkedin,
-  Twitter,
 } from "lucide-react";
 import Navbar from "./Navbar";
 

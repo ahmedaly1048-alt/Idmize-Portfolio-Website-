@@ -164,7 +164,7 @@ export default function LandingPage() {
       
       <Navbar theme={theme} onThemeToggle={toggleTheme} onNavigate={handleNavigate} />
       <Hero theme={theme} onGetStarted={() => handleNavigate('pricing')} />
-      <LogoWall theme={theme} />
+      <LogoWall />
       <FeaturesList theme={theme} />
       <ArchitectureSection theme={theme} />
       <ProductShowcase theme={theme} />
