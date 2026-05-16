@@ -6,9 +6,10 @@ import { useRef } from 'react';
 
 interface HeroProps {
   theme?: 'light' | 'dark';
+  onGetStarted?: () => void;
 }
 
-const Hero = ({ theme = 'dark' }: HeroProps) => {
+const Hero = ({ theme = 'dark', onGetStarted }: HeroProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isDark = theme === 'dark';
   
@@ -53,6 +54,11 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
   const handleMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
+  };
+
+  // Handle external redirect
+  const handleGetStarted = () => {
+    window.open('https://console.idmize.com/', '_blank');
   };
 
   // Theme-specific colors
@@ -155,6 +161,7 @@ const Hero = ({ theme = 'dark' }: HeroProps) => {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <motion.button 
+                onClick={handleGetStarted}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={`group relative rounded-lg px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-medium text-white shadow-lg transition-all ${buttonPrimary}`}

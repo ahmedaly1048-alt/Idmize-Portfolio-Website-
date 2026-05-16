@@ -13,12 +13,17 @@ import StatsSection from "../../components/StatsSection";
 import JourneyPath from "../../components/JourneyPath";
 import ArchitectureSection from "../../components/ImageDisplaySection";
 import IDmizePlatform from "../../components/IDmizePlatform";
+import RequestDemoPage from "../../components/RequestDemoPage";
+import AboutPage from "../../components/AboutPage";
+import ContactSection from "../../components/ContactSection";
+import Footer from "../../components/Footer";
 
 export default function LandingPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [isMounted, setIsMounted] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'pricing'>('home');
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -57,6 +62,23 @@ export default function LandingPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleNavigate = (pageId: string) => {
+    if (pageId === 'pricing') {
+      setCurrentPage('pricing');
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (pageId === 'about') {
+      setCurrentPage('about');
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (pageId === 'home') {
+      setCurrentPage('home');
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const closeDemoPage = () => {
+    setCurrentPage('home');
+  };
+
   const isDark = theme === 'dark';
 
   // Don't render theme-dependent UI until after mount to avoid hydration mismatch
@@ -64,6 +86,17 @@ export default function LandingPage() {
     return null;
   }
 
+  // Show About Page
+  if (currentPage === 'about') {
+    return <AboutPage theme={theme} onThemeToggle={toggleTheme} onNavigate={handleNavigate} />;
+  }
+
+  // Show Pricing/Demo Page
+  if (currentPage === 'pricing') {
+    return <RequestDemoPage theme={theme} onThemeToggle={toggleTheme} onClose={closeDemoPage} />;
+  }
+
+  // Show Main Landing Page
   return (
     <main className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-gray-50'}`}>
       {/* Scroll Progress Bar */}
@@ -129,16 +162,17 @@ export default function LandingPage() {
       {/* Global Grain/Noise Overlay */}
       <div className={`fixed inset-0 pointer-events-none z-[9999] bg-[url('/grain.png')] ${isDark ? 'opacity-[0.02]' : 'opacity-[0.01]'}`} />
       
-      <Navbar theme={theme} onThemeToggle={toggleTheme} />
-      <Hero theme={theme} />
-      <LogoWall />
+      <Navbar theme={theme} onThemeToggle={toggleTheme} onNavigate={handleNavigate} />
+      <Hero theme={theme} onGetStarted={() => handleNavigate('pricing')} />
+      <LogoWall theme={theme} />
       <FeaturesList theme={theme} />
-      <ArchitectureSection  />
+      <ArchitectureSection theme={theme} />
       <ProductShowcase theme={theme} />
       <JourneyPath theme={theme} />
       <StatsSection theme={theme} />
-      <IDmizePlatform  theme={theme}/>
+      <IDmizePlatform theme={theme}/>
       <TrustPlatform theme={theme} />
+      <ContactSection  theme={theme}/>
 
       {/* CTA Section */}
       <section className={`relative py-24 overflow-hidden transition-colors duration-300
@@ -180,6 +214,7 @@ export default function LandingPage() {
             
             <div className="mt-8 flex flex-wrap gap-3 justify-center">
               <motion.button
+                onClick={() => handleNavigate('pricing')}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="group rounded-lg px-6 py-2.5 text-xs font-semibold text-white shadow-lg transition-all duration-300 bg-gradient-to-r from-blue-600 to-blue-500 shadow-blue-600/25 hover:shadow-blue-600/40"
@@ -204,7 +239,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+      <Footer theme={theme} />
+
+      {/* Footer
       <footer className={`py-8 transition-colors duration-300
         ${isDark ? 'border-t border-white/5 bg-black/30' : 'border-t border-gray-200 bg-gray-100/50'}`}>
         <div className="container mx-auto px-6">
@@ -228,7 +265,7 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
 
       {/* Custom Scroller Styles */}
       <style jsx global>{`

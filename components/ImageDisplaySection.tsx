@@ -65,9 +65,9 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
       <div className={`absolute top-20 -left-48 w-96 h-96 rounded-full blur-[140px] ${orb1Bg}`} />
       <div className={`absolute bottom-20 -right-48 w-96 h-96 rounded-full blur-[140px] ${orb2Bg}`} />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
         
-        {/* Section Header */}
+        {/* Section Header - Centered */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'} mb-4`}>
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'} mb-4 mx-auto`}>
             <Sparkles className={`w-3 h-3 ${accentColor}`} />
             <span className={`text-[10px] font-medium uppercase tracking-wider ${accentColor}`}>Architecture</span>
           </div>
@@ -96,8 +96,9 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
           </p>
         </motion.div>
 
+        {/* Content - Centered */}
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-          {/* Left Side: Image Container */}
+          {/* Left Side: Image Container - Centered */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -108,18 +109,18 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             {/* Ambient glow behind the image */}
             <div className={`absolute inset-0 rounded-full blur-[100px] ${glowBg}`} />
             
-            <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-4`}>
+            <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-4 max-w-md mx-auto`}>
               <img 
                 src="/flow.png" 
                 alt="IDmize Architecture Core"
-                className="relative z-10 w-full max-w-[500px] h-auto block drop-shadow-2xl"
+                className="relative z-10 w-full h-auto block drop-shadow-2xl"
               />
             </div>
           </motion.div>
 
-          {/* Right Side: Feature Highlights */}
+          {/* Right Side: Feature Highlights - Centered */}
           <div className="w-full lg:w-1/2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto lg:mx-0">
               {features.map((feature, index) => (
                 <motion.div 
                   key={index}

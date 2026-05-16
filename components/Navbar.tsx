@@ -3,171 +3,200 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa6';
+
+// Custom X (Twitter) Icon
+const XIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.134l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 interface NavbarProps {
   theme?: 'light' | 'dark';
   onThemeToggle?: () => void;
+  onNavigate?: (page: string) => void;
 }
 
-const Navbar = ({ theme = 'dark', onThemeToggle }: NavbarProps) => {
+const Navbar = ({ theme = 'dark', onThemeToggle, onNavigate }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  
   const isDark = theme === 'dark';
+  
+  const navItems = [
+    { name: 'Home', id: 'home' },
+    { name: 'About', id: 'about' },
+    { name: 'Pricing', id: 'pricing' }
+  ];
 
-  // Close mobile menu when window resizes to desktop
-  React.useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const [activeItem, setActiveItem] = React.useState('home');
+
+  const handleNavigation = (pageId: string) => {
+    setActiveItem(pageId);
+    if (onNavigate) {
+      onNavigate(pageId);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleBookDemo = () => {
+    setActiveItem('pricing');
+    if (onNavigate) {
+      onNavigate('pricing');
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  // Theme-specific styles
+  const bgColor = isDark ? 'bg-black/80 backdrop-blur-xl' : 'bg-white/80 backdrop-blur-xl';
+  const borderColor = isDark ? 'border-white/5' : 'border-gray-100';
+  const textColor = isDark ? 'text-white' : 'text-gray-900';
+  const textSecondary = isDark ? 'text-gray-400' : 'text-gray-500';
+  const textHover = isDark ? 'hover:text-white' : 'hover:text-gray-900';
+  const activeTextColor = isDark ? 'text-white' : 'text-gray-900';
+  const underlineColor = isDark ? 'bg-blue-500' : 'bg-blue-500';
+  const buttonBg = isDark ? 'bg-blue-600 hover:bg-blue-500' : 'bg-blue-500 hover:bg-blue-600';
+  const mobileMenuBg = isDark ? 'bg-black/95 backdrop-blur-xl' : 'bg-white/95 backdrop-blur-xl';
+  const socialIconColor = isDark ? 'text-gray-500' : 'text-gray-400';
 
   return (
-    <>
-      {/* Announcement Banner - Responsive */}
-      <div className={`w-full py-2 px-4 text-center text-[11px] sm:text-xs font-medium backdrop-blur-sm transition-colors duration-300
-        ${isDark 
-          ? 'bg-blue-600/5 text-blue-400 border-b border-blue-500/10' 
-          : 'bg-blue-50 text-blue-600 border-b border-blue-200'
-        }`}
-      >
-        <span className="inline-block">
-          🎉 Get an overview of what IDmize offers for AI Governance! 
-          <a href="#" className={`underline ml-1 transition-colors whitespace-nowrap ${isDark ? 'hover:text-blue-300' : 'hover:text-blue-700'}`}>
-            Let's go
-          </a>
-        </span>
-      </div>
-
-      <nav className={`sticky top-0 z-50 w-full border-b backdrop-blur-xl transition-all duration-300
-        ${isDark 
-          ? 'border-white/5 bg-black/90' 
-          : 'border-gray-200 bg-white/90'
-        }`}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3">
-          {/* Brand Logo - Responsive */}
-          <motion.div 
-            whileHover={{ scale: 1.02 }}
-            className="flex items-center gap-1.5 sm:gap-2 cursor-pointer"
-          >
-            <div className={`h-7 w-7 sm:h-8 sm:w-8 relative overflow-hidden rounded-lg flex items-center justify-center
-              ${isDark ? 'bg-blue-600' : 'bg-blue-500'}`}
+    <nav className={`w-full ${bgColor} border-b ${borderColor} sticky top-0 z-50 transition-all duration-300`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-14 md:h-16 items-center justify-between">
+          
+          {/* Logo Section */}
+          <div className="flex items-center gap-6 lg:gap-10">
+            <div 
+              className="flex items-center gap-2 cursor-pointer group"
+              onClick={() => handleNavigation('home')}
             >
-              <img 
-                src="/icon (2).png"
-                alt="Logo"
-                className="w-full h-full object-cover"
-              />
+              <span className={`text-lg md:text-xl font-bold tracking-tight ${textColor} transition-colors duration-300`}>
+                IDmize
+              </span>
+              <div className={`${isDark ? 'bg-blue-600' : 'bg-blue-500'} p-1 rounded-md transition-all duration-300 group-hover:scale-105`}>
+                <img src="/icon (2).png" alt="ID" className="w-4 h-4 md:w-5 md:h-5 object-contain" />
+              </div>
             </div>
-            <span className={`text-lg sm:text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              IDmize
-            </span>
-          </motion.div>
 
-          {/* Desktop Menu - Hidden on tablet/mobile */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-medium">
-            {['Products', 'Pricing', 'Solutions', 'Developers', 'Resources', 'Company'].map((item) => (
-              <a 
-                key={item} 
-                href="#" 
-                className={`relative group transition-colors duration-200 whitespace-nowrap
-                  ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-              >
-                {item}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300`} />
-              </a>
-            ))}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => handleNavigation(item.id)}
+                  className={`relative px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-300
+                    ${activeItem === item.id 
+                      ? `${activeTextColor} bg-white/5` 
+                      : `${textSecondary} ${textHover} hover:bg-white/5`
+                    }`}
+                >
+                  {item.name}
+                  {activeItem === item.id && (
+                    <motion.div 
+                      layoutId="activeNav"
+                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Right side buttons - Responsive */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+          {/* Right Side: Theme Toggle, Socials & CTA */}
+          <div className="flex items-center gap-3 lg:gap-5">
             {/* Theme Toggle Button */}
             <button
               onClick={onThemeToggle}
-              className={`p-1.5 sm:p-2 rounded-lg transition-all duration-300
+              className={`p-1.5 rounded-lg transition-all duration-300
                 ${isDark 
                   ? 'text-gray-400 hover:text-white hover:bg-white/10' 
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
                 }`}
             >
-              {isDark ? <Sun size={16} className="sm:w-[18px] sm:h-[18px]" /> : <Moon size={16} className="sm:w-[18px] sm:h-[18px]" />}
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* Sign In - Hidden on very small screens */}
-            <button className={`hidden sm:block text-sm font-semibold transition-colors
-              ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+            {/* Social Icons - Desktop */}
+            <div className="hidden lg:flex items-center gap-3">
+              <FaFacebook 
+                size={14} 
+                className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-blue-500 hover:scale-110`} 
+              />
+              <FaInstagram 
+                size={14} 
+                className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-pink-500 hover:scale-110`} 
+              />
+              <FaLinkedin 
+                size={14} 
+                className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-blue-600 hover:scale-110`} 
+              />
+              <div className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-white hover:scale-110`}>
+                <XIcon />
+              </div>
+            </div>
+
+            {/* Book a Demo Button */}
+            <button 
+              onClick={handleBookDemo}
+              className={`${buttonBg} text-white px-4 md:px-5 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95`}
             >
-              Sign in
+              Book a Demo
             </button>
-            
-            {/* Get Started Button - Responsive */}
-            <motion.button 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`rounded-lg px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-lg transition-all duration-300
-                ${isDark 
-                  ? 'bg-blue-600 shadow-blue-600/20 hover:bg-blue-500' 
-                  : 'bg-blue-500 shadow-blue-500/20 hover:bg-blue-600'
-                }`}
-            >
-              Get started
-            </motion.button>
-            
-            {/* Mobile Menu Button */}
+
+            {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-1.5 rounded-lg transition-colors
-                ${isDark 
-                  ? 'text-white hover:bg-white/10' 
-                  : 'text-gray-900 hover:bg-gray-100'
-                }`}
+              className={`lg:hidden p-1.5 rounded-lg transition-all duration-300 ${textColor} hover:bg-white/10`}
             >
-              {isMobileMenuOpen ? <X size={18} className="sm:w-5 sm:h-5" /> : <Menu size={18} className="sm:w-5 sm:h-5" />}
+              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu - Responsive */}
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className={`lg:hidden border-t backdrop-blur-xl
-              ${isDark 
-                ? 'border-white/5 bg-black/95' 
-                : 'border-gray-200 bg-white/95'
-              }`}
-          >
-            <div className="px-4 sm:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3">
-              {['Products', 'Pricing', 'Solutions', 'Developers', 'Resources', 'Company'].map((item) => (
-                <a 
-                  key={item} 
-                  href="#" 
-                  className={`block text-sm font-medium transition-colors py-2 px-2 rounded-lg hover:bg-white/5
-                    ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
-              <div className={`pt-2 sm:pt-3 mt-2 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                <button className={`w-full text-left text-sm font-semibold transition-colors py-2 px-2 rounded-lg hover:bg-white/5
-                  ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Sign in
-                </button>
+      {/* Mobile Menu - Sleek */}
+      {isMobileMenuOpen && (
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className={`lg:hidden ${mobileMenuBg} border-t ${borderColor} shadow-xl backdrop-blur-xl`}
+        >
+          <div className="px-4 py-3 space-y-1">
+            {navItems.map((item) => (
+              <button 
+                key={item.name} 
+                onClick={() => handleNavigation(item.id)}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                  ${activeItem === item.id 
+                    ? `${activeTextColor} bg-white/10` 
+                    : `${textSecondary} ${textHover} hover:bg-white/5`
+                  }`}
+              >
+                {item.name}
+              </button>
+            ))}
+            
+            {/* Social Icons - Mobile */}
+            <div className="flex gap-5 pt-4 mt-2 border-t border-white/10">
+              <FaFacebook size={16} className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-blue-500`} />
+              <FaInstagram size={16} className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-pink-500`} />
+              <FaLinkedin size={16} className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-blue-600`} />
+              <div className={`cursor-pointer transition-all duration-300 ${socialIconColor} hover:text-white`}>
+                <XIcon />
               </div>
             </div>
-          </motion.div>
-        )}
-      </nav>
-    </>
+            
+            <button 
+              onClick={handleBookDemo}
+              className={`w-full ${buttonBg} text-white py-2 rounded-lg font-medium text-sm mt-3 transition-all duration-300`}
+            >
+              Book a Demo
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </nav>
   );
 };
 
