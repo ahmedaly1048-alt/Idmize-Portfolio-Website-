@@ -205,23 +205,23 @@ const Hero = ({ theme = 'dark', onGetStarted }: HeroProps) => {
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             className="relative w-full mt-8 lg:mt-0"
           >
-            {/* Enhanced shadow and glow behind main image */}
+            {/* Enhanced shadow and glow behind main video */}
             <div className={`absolute -inset-6 rounded-2xl blur-3xl ${shadowBlur}`} />
             <div className={`absolute -inset-8 rounded-full blur-3xl ${decorativeBlur}`} />
             
-            {/* Main Console Image - Desktop: -left-12, Mobile: no offset */}
+            {/* Main Console Video - Desktop: -left-12, Mobile: no offset */}
             <div className={`relative rounded-xl overflow-hidden ${imageBg} ${imageGlow} lg:-left-12`}>
               {/* Prominent border with glow */}
               <div className={`absolute inset-0 rounded-xl border-2 shadow-[0_0_30px_rgba(59,130,246,0.4)] z-10 pointer-events-none ${imageBorder}`} />
               <div className="relative w-full" style={{ aspectRatio: '1950/1400' }}>
-                <Image 
-                  src="/hero3.png"
-                  alt="Console Dashboard"
-                  fill
-                  className="object-fill brightness-105 contrast-105"
-                  quality={100}
-                  priority
-                  sizes="(max-width: 768px) 90vw, (max-width: 1024px) 80vw, 50vw"
+                <video
+                  src="/aiconnect.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover brightness-105 contrast-105"
+                  poster="/hero-poster.jpg" // Optional: add a poster image
                 />
               </div>
               {/* Enhanced accent overlay */}

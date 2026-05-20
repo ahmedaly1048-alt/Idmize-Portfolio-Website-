@@ -5,14 +5,18 @@ const prisma = require("./models/prismaClient");
 const demoRoutes = require("./routes/demoRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
-
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // ── Middleware ──────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  origin: [
+    process.env.FRONTEND_URL,
+    "https://idmize.com",
+    "https://www.idmize.com",
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 }));
@@ -24,35 +28,8 @@ app.get("/health", (req, res) =>
   res.json({ status: "ok", timestamp: new Date().toISOString() })
 );
 
-app.get("/test-email", async (req, res) => {
-  const nodemailer = require("nodemailer");
-  console.log("GMAIL_USER:", process.env.GMAIL_USER);
-  console.log("Password length:", process.env.GMAIL_APP_PASSWORD?.length);
-  
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-
-  try {
-    await transporter.verify();
-    res.json({ success: true, message: "Gmail connected!" });
-  } catch (err) {
-    res.json({ 
-      success: false, 
-      error: err.message, 
-      user: process.env.GMAIL_USER, 
-      passLength: process.env.GMAIL_APP_PASSWORD?.length 
-    });
-  }
-});
-
 app.use("/api/demo", demoRoutes);
 app.use("/api/contact", contactRoutes);
-
 
 // ── 404 Handler ─────────────────────────────────────────────
 app.use((req, res) => {
