@@ -215,7 +215,7 @@ const Hero = ({ theme = 'dark', onGetStarted }: HeroProps) => {
               <div className={`absolute inset-0 rounded-xl border-2 shadow-[0_0_30px_rgba(59,130,246,0.4)] z-10 pointer-events-none ${imageBorder}`} />
               <div className="relative w-full" style={{ aspectRatio: '1950/1400' }}>
                 <video
-                  src="/aiconnect.mp4"
+                  src="/hero3.mp4"
                   autoPlay
                   loop
                   muted
