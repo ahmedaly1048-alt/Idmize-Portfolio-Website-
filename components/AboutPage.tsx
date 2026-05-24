@@ -19,7 +19,7 @@ const teamMembers = [
   { name: "Dr. Homayoun", role: "Co-Founder & AI Tech Lead", focus: "Proprietary Core Architecture & Deep Tech", image: "/drH.avif", linkedin: "https://www.linkedin.com/in/homayun-afrabandpey-2b4b4180/" },
   { name: "Dr. Daniel", role: "Co-Founder & Strategic Advisor", focus: "AI Governance Frameworks & Market Alignment", image: "/DrIs.avif", linkedin: "https://www.linkedin.com/in/daniel-rb-24962b1/" },
   { name: "MOHAMMAD", role: "Co-Founder & Back-end Lead", focus: "Server-side Logic, Database Integrity, and API Infrastructure", image: "/M.avif", linkedin: "https://www.linkedin.com/in/mohammad-ali-farajian-b39246104/" },
-  { name: "HAMID", role: "Co-Founder & Chief Sustainability Architect", focus: "Global Compliance Strategy, and Business Development Advisory", image: "/H.avif", linkedin: "https://www.linkedin.com/in/hamidgharehbaghi/" },
+  { name: "HAMID", role: "Strategic Advisor", focus: "Global Compliance Strategy, and Business Development Advisory", image: "/H.avif", linkedin: "https://www.linkedin.com/in/hamidgharehbaghi/" },
   { name: "Ammar", role: "Lead Product Engineer", focus: "Product Infrastructure & PWA Implementation", image: "/A.avif", linkedin: "https://www.linkedin.com/in/ammarhaiderak/" },
 ];
 
