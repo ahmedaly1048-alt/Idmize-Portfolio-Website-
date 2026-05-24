@@ -33,7 +33,6 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
     }
   ];
 
-  // Theme-specific styles
   const bgColor = isDark ? 'bg-black' : 'bg-gray-50';
   const gridColor = isDark ? '#3b82f6' : '#60a5fa';
   const gridOpacity = isDark ? 'opacity-[0.06]' : 'opacity-[0.08]';
@@ -52,7 +51,7 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
 
   return (
     <section className={`relative ${bgColor} py-20 overflow-hidden transition-colors duration-300`}>
-      {/* Background Grid Pattern */}
+      {/* Background Grid */}
       <div 
         className={`absolute inset-0 pointer-events-none ${gridOpacity}`}
         style={{ 
@@ -61,13 +60,12 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
         }} 
       />
       
-      {/* Subtle gradient orbs */}
       <div className={`absolute top-20 -left-48 w-96 h-96 rounded-full blur-[140px] ${orb1Bg}`} />
       <div className={`absolute bottom-20 -right-48 w-96 h-96 rounded-full blur-[140px] ${orb2Bg}`} />
 
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
         
-        {/* Section Header - Centered */}
+        {/* Section Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,16 +77,44 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             <Sparkles className={`w-3 h-3 ${accentColor}`} />
             <span className={`text-[10px] font-medium uppercase tracking-wider ${accentColor}`}>Architecture</span>
           </div>
-          <h2 className={`text-2xl md:text-3xl font-semibold tracking-tight ${titleColor} mb-3`}>
-            Enterprise-Grade{' '}
-            <span className={accentColor}>AI Architecture</span>
-          </h2>
+
+          {/* Title + Patent Badge inline */}
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <h2 className={`text-2xl md:text-3xl font-semibold tracking-tight ${titleColor}`}>
+              Enterprise-Grade{' '}
+              <span className={accentColor}>AI Architecture</span>
+            </h2>
+
+            {/* Patent Pending Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className={`
+                relative inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                border text-[9px] font-semibold uppercase tracking-widest
+                ${isDark 
+                  ? 'bg-emerald-950/60 border-emerald-500/30 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)]' 
+                  : 'bg-emerald-50 border-emerald-300 text-emerald-600 shadow-sm'
+                }
+              `}
+            >
+              {/* Pulsing dot */}
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              Patent Pending · UK
+            </motion.div>
+          </div>
+
           <motion.div 
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="w-12 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mb-4"
+            className="w-12 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mb-4 mt-3"
           />
           <p className={`${descriptionColor} max-w-2xl mx-auto text-sm leading-relaxed`}>
             IDmize provides a secure intermediary layer between your organization and 
@@ -96,9 +122,10 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
           </p>
         </motion.div>
 
-        {/* Content - Centered */}
+        {/* Content */}
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-          {/* Left Side: Image Container - Centered */}
+          
+          {/* Left: Image with floating patent badge */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -106,9 +133,32 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="relative flex justify-center w-full lg:w-1/2"
           >
-            {/* Ambient glow behind the image */}
             <div className={`absolute inset-0 rounded-full blur-[100px] ${glowBg}`} />
             
+            {/* Floating badge on image
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className="absolute -top-3 right-4 z-20"
+            >
+              <div className={`
+                inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                border text-[8px] font-bold uppercase tracking-widest backdrop-blur-sm
+                ${isDark 
+                  ? 'bg-black/80 border-emerald-500/40 text-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.2)]' 
+                  : 'bg-white/90 border-emerald-400 text-emerald-600 shadow-md'
+                }
+              `}>
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+                Patent Pending · UK
+              </div>
+            </motion.div> */}
+
             <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-4 max-w-md mx-auto`}>
               <img 
                 src="/flow.png" 
@@ -118,7 +168,7 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             </div>
           </motion.div>
 
-          {/* Right Side: Feature Highlights - Centered */}
+          {/* Right: Feature Cards */}
           <div className="w-full lg:w-1/2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto lg:mx-0">
               {features.map((feature, index) => (
@@ -130,16 +180,13 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   className={`group relative ${cardBg} border ${cardBorder} p-5 rounded-xl ${cardHoverBg} ${cardHoverBorder} transition-all duration-300`}
                 >
-                  {/* Glow effect on hover */}
                   <div className={`absolute -inset-px bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 group-hover:from-blue-500/10 group-hover:via-blue-500/5 rounded-xl transition-all duration-500 pointer-events-none`} />
                   
                   <div className="relative">
                     <div className={`mb-3 ${iconBg} w-8 h-8 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <div className={`${iconColor}`}>
-                        {feature.icon}
-                      </div>
+                      <div className={iconColor}>{feature.icon}</div>
                     </div>
-                    <h4 className={`${titleColor} font-semibold text-sm mb-1 group-hover:${accentColor} transition-colors duration-300`}>
+                    <h4 className={`${titleColor} font-semibold text-sm mb-1`}>
                       {feature.title}
                     </h4>
                     <p className={`${descriptionColor} text-xs leading-relaxed`}>

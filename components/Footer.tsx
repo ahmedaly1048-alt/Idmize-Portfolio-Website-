@@ -38,10 +38,30 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
   ];
 
   const socialIcons = [
-    { icon: FaFacebook, href: '#', color: 'hover:text-blue-600' },
-    { icon: FaInstagram, href: '#', color: 'hover:text-pink-500' },
-    { icon: FaTwitter, href: '#', color: 'hover:text-sky-500' },
-    { icon: FaLinkedin, href: '#', color: 'hover:text-blue-700' }
+    { 
+      icon: FaLinkedin, 
+      href: 'https://www.linkedin.com/company/idmize/',
+      color: 'hover:text-blue-600',
+      label: 'LinkedIn'
+    },
+    { 
+      icon: FaFacebook, 
+      href: 'https://www.facebook.com/share/1AjAgNbG2u/',
+      color: 'hover:text-blue-600',
+      label: 'Facebook'
+    },
+    { 
+      icon: FaInstagram, 
+      href: 'https://www.instagram.com/idmize.co?igsh=aXIybjEzbXFqZzVm',
+      color: 'hover:text-pink-500',
+      label: 'Instagram'
+    },
+    { 
+      icon: FaTwitter, 
+      href: '#',
+      color: 'hover:text-sky-500',
+      label: 'Twitter'
+    }
   ];
 
   // Theme-specific styles
@@ -56,6 +76,10 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
   const buttonBg = isDark ? 'bg-blue-600 hover:bg-blue-500' : 'bg-blue-500 hover:bg-blue-600';
   const dividerBg = isDark ? 'bg-gradient-to-r from-transparent via-white/10 to-transparent' : 'bg-gradient-to-r from-transparent via-gray-300 to-transparent';
 
+  const handleSocialClick = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <footer className={`relative ${bgColor} border-t ${borderColor} transition-colors duration-300 overflow-hidden`}>
       {/* Subtle background gradient */}
@@ -63,7 +87,7 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
       
       <div className="relative z-10">
         {/* Main Footer Content */}
-        <div className="container mx-auto px-4 sm:px-6 py-12 max-w-6xl">
+        <div className="container mx-auto px-4 sm:px-6 pt-12 pb-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             
             {/* Brand Column */}
@@ -85,13 +109,14 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
               </p>
               <div className="flex gap-3">
                 {socialIcons.map((social, idx) => (
-                  <a
+                  <button
                     key={idx}
-                    href={social.href}
+                    onClick={() => handleSocialClick(social.href)}
                     className={`p-1.5 rounded-lg transition-all duration-300 ${iconBg} ${social.color}`}
+                    aria-label={`Follow us on ${social.label}`}
                   >
                     <social.icon className="w-3.5 h-3.5" />
-                  </a>
+                  </button>
                 ))}
               </div>
             </motion.div>
@@ -175,7 +200,7 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
           {/* Divider */}
           <div className={`my-8 h-px ${dividerBg}`} />
 
-          {/* Bottom Bar */}
+          {/* Bottom Bar - First Row (Legal Links + Copyright) */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-4">
               {legal.map((item, idx) => (
@@ -194,6 +219,19 @@ const Footer = ({ theme = 'dark', onNavigate }: FooterProps) => {
               </p>
             </div>
           </div>
+
+          {/* Legal Line - Patent Pending Notice */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-4 pt-4 text-center"
+          >
+            <p className={`text-[9px] ${textMuted} tracking-wide leading-relaxed`}>
+              Core Orchestration & Sanitization Architecture is Patent Pending.
+            </p>
+          </motion.div>
         </div>
       </div>
     </footer>

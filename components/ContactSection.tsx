@@ -1,6 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Sparkles, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Sparkles, Clock, CheckCircle, AlertCircle, Globe, Building2, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 interface ContactSectionProps {
@@ -49,10 +49,11 @@ const ContactSection = ({ theme = 'dark' }: ContactSectionProps) => {
     }
   };
 
+  // Updated contact info with real EU credentials
   const contactInfo = [
-    { icon: Mail, title: "Email Us", detail: "hello@idmize.com", sub: "We'll respond within 24 hours" },
-    { icon: Phone, title: "Call Us", detail: "+1 (555) 123-4567", sub: "Mon-Fri, 9am-6pm EST" },
-    { icon: MapPin, title: "Visit Us", detail: "San Francisco, CA", sub: "Remote-first company" },
+    { icon: Mail, title: "Enterprise Inquiries", detail: "info@idmize.com", sub: "We'll respond within 24 hours" },
+    { icon: Phone, title: "Direct Hotline", detail: "+370 686 67554", sub: "Mon-Fri, 9am-6pm EET" },
+    { icon: MapPin, title: "EU Headquarters", detail: "Kauno g. 16, Vilnius", sub: "03218 Vilniaus m. sav, Lithuania (EU)" },
     { icon: Clock, title: "Support", detail: "24/7 Enterprise Support", sub: "Dedicated account manager" }
   ];
 
@@ -109,7 +110,7 @@ const ContactSection = ({ theme = 'dark' }: ContactSectionProps) => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-6">
-          {/* Left Column */}
+          {/* Left Column - Updated with real info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -129,16 +130,63 @@ const ContactSection = ({ theme = 'dark' }: ContactSectionProps) => {
                 <div className={`p-2 rounded-lg ${iconBg} group-hover:scale-110 transition-transform duration-300`}>
                   <item.icon className={`w-4 h-4 ${iconColor}`} />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className={`text-sm font-semibold ${textPrimary} mb-0.5`}>{item.title}</h3>
-                  <p className={`text-xs font-medium ${iconColor} mb-0.5`}>{item.detail}</p>
+                  {item.title === "EU Headquarters" ? (
+                    <a 
+                      href="https://maps.app.goo.gl/nHPqeL2MVU2RHhF26"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/link inline-flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors mb-0.5"
+                    >
+                      {item.detail}
+                      <ExternalLink className="w-2.5 h-2.5 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                    </a>
+                  ) : item.title === "Enterprise Inquiries" ? (
+                    <a 
+                      href="mailto:info@idmize.com"
+                      className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors mb-0.5 block"
+                    >
+                      {item.detail}
+                    </a>
+                  ) : item.title === "Direct Hotline" ? (
+                    <a 
+                      href="tel:+37068667554"
+                      className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors mb-0.5 block"
+                    >
+                      {item.detail}
+                    </a>
+                  ) : (
+                    <p className={`text-xs font-medium ${iconColor} mb-0.5`}>{item.detail}</p>
+                  )}
                   <p className={`text-[10px] ${textSecondary}`}>{item.sub}</p>
                 </div>
               </motion.div>
             ))}
+
+            {/* Corporate Transparency Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className={`mt-4 p-3 rounded-xl border ${borderColor} ${cardBg} bg-gradient-to-r ${isDark ? 'from-blue-500/5 to-transparent' : 'from-blue-50 to-transparent'}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Building2 className={`w-3.5 h-3.5 ${iconColor}`} />
+                <span className={`text-[10px] font-semibold uppercase tracking-wider ${iconColor}`}>Corporate Transparency</span>
+              </div>
+              <div className="flex flex-col gap-1.5 text-[10px] text-gray-400">
+                <p>IDmize is officially registered and operational within the European Union.</p>
+                <p className="flex items-center gap-1">
+                  <Globe className="w-2.5 h-2.5" />
+                  <span>VAT: EU Registered</span>
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
 
-          {/* Right Column - Form */}
+          {/* Right Column - Form (unchanged) */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -205,7 +253,6 @@ const ContactSection = ({ theme = 'dark' }: ContactSectionProps) => {
                   />
                 </div>
 
-                {/* Error Message */}
                 {errorMsg && (
                   <motion.div
                     initial={{ opacity: 0, y: -4 }}
@@ -217,7 +264,6 @@ const ContactSection = ({ theme = 'dark' }: ContactSectionProps) => {
                   </motion.div>
                 )}
 
-                {/* Success Message */}
                 {formSubmitted && (
                   <motion.div
                     initial={{ opacity: 0, y: -4 }}

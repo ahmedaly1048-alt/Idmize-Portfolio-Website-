@@ -7,36 +7,38 @@ interface StatsSectionProps {
 
 const stats = [
   {
+    prefix: "AVERAGE",
+    value: "40 – 60%",
+    label: "Lower LLM TCO",
+    sublabel: "Via corporate prompt caching layer",
+    color: "bg-emerald-500"
+  },
+  {
     prefix: "UP TO",
-    value: "70%",
-    label: "Less Ops Overhead",
+    value: "80%",
+    label: "Less Compliance Ops Overhead",
+    sublabel: "Automated sanitization vs. manual IT audits",
     color: "bg-blue-500"
   },
   {
-    prefix: "OVER",
-    value: "220",
-    suffix: "Billion",
-    label: "Identity Interactions Secured",
+    prefix: "AS LOW AS",
+    value: "< 15ms",
+    label: "Prompt Sanitization Latency",
+    sublabel: "Zero-Trust layer, zero productivity loss",
     color: "bg-blue-400"
   },
   {
-    prefix: "",
-    value: "67%",
-    label: "Average Lower TCO",
-    color: "bg-blue-600"
-  },
-  {
-    prefix: "OVER",
-    value: "500+",
-    label: "Enterprise Deployments",
-    color: "bg-blue-500"
+    prefix: "GUARANTEED",
+    value: "100%",
+    label: "Automated PII & IP Leak Protection",
+    sublabel: "End-to-end data sovereignty enforcement",
+    color: "bg-emerald-400"
   }
 ];
 
 const StatsSection = ({ theme = 'dark' }: StatsSectionProps) => {
   const isDark = theme === 'dark';
 
-  // Theme-specific styles
   const bgColor = isDark ? 'bg-black' : 'bg-gray-50';
   const gridColor = isDark ? '#3b82f6' : '#60a5fa';
   const gridOpacity = isDark ? 'opacity-[0.06]' : 'opacity-[0.08]';
@@ -46,12 +48,13 @@ const StatsSection = ({ theme = 'dark' }: StatsSectionProps) => {
   const titleColor = isDark ? 'text-white' : 'text-gray-900';
   const prefixColor = isDark ? 'text-gray-500' : 'text-gray-400';
   const valueColor = isDark ? 'text-white' : 'text-gray-900';
-  const suffixColor = isDark ? 'text-blue-400' : 'text-blue-500';
-  const labelColor = isDark ? 'text-gray-400' : 'text-gray-600';
+  const labelColor = isDark ? 'text-gray-300' : 'text-gray-700';
+  const sublabelColor = isDark ? 'text-gray-500' : 'text-gray-400';
+  const cardBg = isDark ? 'bg-white/[0.02] hover:bg-white/[0.04] border-white/5 hover:border-white/10' : 'bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300';
 
   return (
     <section className={`relative ${bgColor} py-20 border-t ${borderColor} overflow-hidden transition-colors duration-300`}>
-      {/* Background Grid Pattern */}
+      {/* Background Grid */}
       <div 
         className={`absolute inset-0 pointer-events-none ${gridOpacity}`}
         style={{ 
@@ -60,11 +63,11 @@ const StatsSection = ({ theme = 'dark' }: StatsSectionProps) => {
         }} 
       />
 
-      {/* Subtle gradient orbs */}
       <div className={`absolute top-20 -left-48 w-96 h-96 rounded-full blur-[140px] ${orb1Bg}`} />
       <div className={`absolute bottom-20 -right-48 w-96 h-96 rounded-full blur-[140px] ${orb2Bg}`} />
 
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
+        
         {/* Section Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -75,11 +78,17 @@ const StatsSection = ({ theme = 'dark' }: StatsSectionProps) => {
         >
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4 ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'}`}>
             <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'}`} />
-            <span className={`text-[10px] font-medium uppercase tracking-wider ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>Stats</span>
+            <span className={`text-[10px] font-medium uppercase tracking-wider ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>
+              Performance Benchmarks
+            </span>
           </div>
-          <h2 className={`text-2xl md:text-3xl font-semibold ${titleColor} tracking-tight transition-colors duration-300`}>
-            Proven at Enterprise Scale
+          <h2 className={`text-2xl md:text-3xl font-semibold ${titleColor} tracking-tight`}>
+            Proven at{' '}
+            <span className={isDark ? 'text-blue-400' : 'text-blue-500'}>Enterprise Scale</span>
           </h2>
+          <p className={`text-xs mt-2 ${sublabelColor} max-w-md mx-auto`}>
+            Technical performance benchmarks based on platform efficiency and ROI analysis.
+          </p>
           <motion.div 
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -89,47 +98,58 @@ const StatsSection = ({ theme = 'dark' }: StatsSectionProps) => {
           />
         </motion.div>
 
-        {/* Stats Grid - Centered */}
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="flex items-center justify-start gap-5 group"
-              >
-                {/* Vertical Bar */}
-                <div className={`w-1 h-16 rounded-full ${stat.color} group-hover:h-20 transition-all duration-300`} />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className={`group relative rounded-xl border p-6 transition-all duration-300 ${cardBg}`}
+            >
+              {/* Top accent bar */}
+              <div className={`absolute top-0 left-6 right-6 h-px ${stat.color} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
 
-                <div className="flex flex-col">
-                  {stat.prefix && (
-                    <span className={`${prefixColor} text-[9px] font-bold tracking-widest uppercase mb-1 transition-colors duration-300`}>
-                      {stat.prefix}
-                    </span>
-                  )}
-                  
-                  <div className="flex items-baseline gap-1">
-                    <span className={`text-3xl md:text-4xl lg:text-5xl font-bold ${valueColor} leading-none tracking-tighter transition-colors duration-300`}>
-                      {stat.value}
-                    </span>
-                    {stat.suffix && (
-                      <span className={`text-base md:text-lg lg:text-xl font-bold ${suffixColor} transition-colors duration-300`}>
-                        {stat.suffix}
-                      </span>
-                    )}
-                  </div>
+              {/* Prefix */}
+              {stat.prefix && (
+                <span className={`${prefixColor} text-[8px] font-bold tracking-widest uppercase block mb-2`}>
+                  {stat.prefix}
+                </span>
+              )}
 
-                  <p className={`${labelColor} text-xs font-medium mt-2 transition-colors duration-300`}>
-                    {stat.label}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              {/* Value */}
+              <div className={`text-3xl md:text-4xl font-bold ${valueColor} leading-none tracking-tighter mb-2`}>
+                {stat.value}
+              </div>
+
+              {/* Divider */}
+              <div className={`w-8 h-px ${stat.color} mb-3 group-hover:w-16 transition-all duration-500`} />
+
+              {/* Label */}
+              <p className={`${labelColor} text-xs font-semibold leading-snug mb-1`}>
+                {stat.label}
+              </p>
+
+              {/* Sublabel */}
+              <p className={`${sublabelColor} text-[10px] leading-relaxed`}>
+                {stat.sublabel}
+              </p>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Disclaimer */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className={`text-center text-[9px] mt-8 ${sublabelColor}`}
+        >
+          * Benchmarks based on internal platform efficiency analysis and projected ROI modeling. Results may vary based on deployment configuration.
+        </motion.p>
       </div>
     </section>
   );
