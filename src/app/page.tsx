@@ -115,7 +115,7 @@ export default function LandingPage() {
           <ProductShowcase theme={theme} />
           <JourneyPath theme={theme} />
           <StatsSection theme={theme} />
-          <IDmizePlatform theme={theme} />
+          <IDmizePlatform />
           <ContactSection theme={theme} />
 
           {/* CTA Section */}
