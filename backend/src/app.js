@@ -4,6 +4,8 @@ const cors = require("cors");
 const prisma = require("./models/prismaClient");
 const demoRoutes = require("./routes/demoRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const cookieRoutes = require("./routes/cookieRoutes");
+const { consentTracking } = require("./middleware/consentMiddleware");
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -17,11 +19,14 @@ app.use(cors({
     "http://localhost:3000",
     "http://localhost:3001",
   ],
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.use(express.json({ limit: "10kb" }));
+
+// Consent tracking middleware
+app.use(consentTracking);
 
 // ── Routes ──────────────────────────────────────────────────
 app.get("/health", (req, res) =>
@@ -30,6 +35,7 @@ app.get("/health", (req, res) =>
 
 app.use("/api/demo", demoRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/cookies", cookieRoutes);
 
 // ── 404 Handler ─────────────────────────────────────────────
 app.use((req, res) => {

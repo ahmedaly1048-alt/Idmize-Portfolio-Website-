@@ -183,27 +183,19 @@ const Hero = ({ theme = "dark", onGetStarted }: HeroProps) => {
               </motion.button>
             </div>
 
-            {/* Trust indicators */}
-            <div className="mt-8 flex items-center gap-4">
-              <div className="flex -space-x-1.5">
-                {avatars.map((avatar, i) => (
-                  <div
-                    key={i}
-                    className={`w-7 h-7 rounded-full overflow-hidden border ${avatarBorder} bg-cover bg-center`}
-                    style={{ backgroundImage: `url(${avatar})` }}
-                  >
-                    <div className="w-full h-full" />
-                  </div>
-                ))}
-              </div>
-              <p className={`text-xs ${textMuted}`}>
-                Trusted by{" "}
+            {/* Positioning indicator */}
+            <div className="mt-8 flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <p className={`text-xs font-medium ${textMuted}`}>
+                Open for{" "}
                 <span
-                  className={`font-medium ${isDark ? "text-white" : "text-gray-700"}`}
+                  className={`font-semibold ${isDark ? "text-white" : "text-gray-800"}`}
                 >
-                  50+
-                </span>{" "}
-                enterprise teams
+                  Strategic Enterprise Pilot Deployments
+                </span>
               </p>
             </div>
           </motion.div>

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   CheckCircle, Send, Shield, Clock, Building, Briefcase,
   Users, Sparkles, ChevronDown, ArrowLeft, AlertCircle,
-  Zap, Lock, Globe, Star, ArrowUpRight
+  Zap, Lock, Globe, Star, ArrowUpRight, Server, Database, Brain
 } from "lucide-react";
 
 interface RequestDemoPageProps {
@@ -20,12 +20,17 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [formData, setFormData] = useState({ name: '', email: '', company: '', role: '', message: '' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    company: '', 
+    role: '', 
+    service: '',
+    message: '' 
+  });
 
   const formRef = useRef<HTMLDivElement>(null);
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  const avatars = ["/av1.jpg", "/av2.jpg", "/av3.jpg"];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,7 +50,7 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
       const data = await res.json();
       if (data.success) {
         setFormSubmitted(true);
-        setFormData({ name: "", email: "", company: "", role: "", message: "" });
+        setFormData({ name: "", email: "", company: "", role: "", service: "", message: "" });
         setTimeout(() => setFormSubmitted(false), 8000);
       } else {
         setErrorMsg(data.errors?.[0]?.message || "Something went wrong. Please try again.");
@@ -64,9 +69,8 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
   const textPrimary   = isDark ? 'text-white'  : 'text-gray-900';
   const textSecondary = isDark ? 'text-gray-400' : 'text-gray-500';
   const textMuted     = isDark ? 'text-gray-500' : 'text-gray-400';
-  const inputBg       = isDark ? 'bg-black/40 border-white/10 text-white' : 'bg-gray-50 border-gray-200 text-gray-900';
+  const inputBg       = isDark ? 'bg-black/60 border-white/10 text-white' : 'bg-gray-50 border-gray-200 text-gray-900';
   const badgeBg       = isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm';
-  const avatarBorder  = isDark ? 'border-white' : 'border-gray-300';
 
   const pricingTiers = [
     {
@@ -92,8 +96,16 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
     },
   ];
 
+  const serviceOptions = [
+    { value: "design-partner", label: "Tier 1: Design Partner Pilot", icon: Shield, description: "Validate AI governance within a specific department" },
+    { value: "scale-compliance", label: "Tier 2: Scale & Compliance", icon: Zap, description: "Automated data protection and regulatory compliance" },
+    { value: "enterprise-sovereign", label: "Tier 3: Enterprise Sovereign", icon: Lock, description: "Absolute data sovereignty & decentralized control" },
+    { value: "custom-solution", label: "Custom Enterprise Solution", icon: Server, description: "Tailored architecture for specific needs" },
+    { value: "security-audit", label: "AI Security Audit", icon: Database, description: "Comprehensive governance assessment" },
+    { value: "consultation", label: "Strategic Consultation", icon: Brain, description: "Expert guidance on AI governance" },
+  ];
+
   return (
-    // No <main> or <Navbar> — LandingPage owns both
     <div className={`min-h-screen transition-colors duration-300 ${bgColor} overflow-y-auto`}>
       {/* Background grid */}
       <div
@@ -104,7 +116,7 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
         }}
       />
 
-      {/* Back button — sits just below the shared Navbar */}
+      {/* Back button */}
       <div className="sticky top-16 z-40 pointer-events-none">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pointer-events-auto">
           <button
@@ -212,8 +224,8 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
           <div className={`flex-1 h-px ${isDark ? 'bg-white/5' : 'bg-gray-200'}`} />
         </div>
 
-        {/* Demo Form */}
-        <div ref={formRef} className="max-w-5xl mx-auto">
+        {/* Demo Form - Updated with Service Selection, Left Column Removed */}
+        <div ref={formRef} className="max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} className="text-center mb-6">
             <h2 className={`text-xl md:text-2xl font-bold tracking-tight ${textPrimary} mb-1`}>
               Request Access or{' '}
@@ -222,131 +234,133 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
             <p className={`${textSecondary} text-[11px] max-w-md mx-auto`}>Fill out the form — our enterprise team will respond within 24 hours</p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-5 gap-4">
-            {/* Left info column */}
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} className="lg:col-span-2 space-y-2.5">
-              <div className={`rounded-lg border ${borderColor} ${cardBg} p-3`}>
-                <h3 className={`text-xs font-semibold ${textPrimary} mb-2`}>What to expect</h3>
-                <div className="space-y-1.5">
-                  {[{ icon: Users, text: "Live platform walkthrough" }, { icon: Building, text: "Tailored industry solutions" }, { icon: Shield, text: "Q&A with product experts" }].map((item, i) => (
-                    <div key={i} className="flex items-center gap-1.5">
-                      <item.icon className="w-3 h-3 text-blue-400" />
-                      <span className={`text-[9px] ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>{item.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className={`rounded-lg border ${borderColor} ${cardBg} p-3`}>
-                <h3 className={`text-xs font-semibold ${textPrimary} mb-1.5`}>Why IDmize?</h3>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[{ icon: Shield, text: "Enterprise-grade" }, { icon: Clock, text: "30-min setup" }, { icon: Building, text: "Custom deploy" }, { icon: Briefcase, text: "Team collab" }].map((b, i) => (
-                    <div key={i} className="flex items-center gap-1">
-                      <b.icon className="w-2.5 h-2.5 text-blue-400" />
-                      <span className={`text-[8px] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{b.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className={`rounded-lg border-l-2 border-blue-500 ${isDark ? 'bg-blue-500/5' : 'bg-blue-50'} p-2.5`}>
-                <p className={`text-[8px] italic ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-0.5`}>
-                  "IDmize transformed our AI governance. The demo gave us complete confidence."
-                </p>
-                <p className={`text-[7px] font-medium ${textPrimary}`}>— CTO, Enterprise Company</p>
-              </div>
-
-              <div className="text-center">
-                <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full ${badgeBg}`}>
-                  <div className="flex -space-x-1">
-                    {avatars.map((avatar, i) => (
-                      <div key={i} className={`w-5 h-5 rounded-full overflow-hidden border ${avatarBorder} bg-cover bg-center`} style={{ backgroundImage: `url(${avatar})` }} />
-                    ))}
-                  </div>
-                  <p className={`text-[8px] ${textSecondary}`}>Trusted by <span className={`font-medium ${textPrimary}`}>500+</span> companies</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right form column */}
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }} className="lg:col-span-3">
-              <div className={`rounded-lg border ${borderColor} ${cardBg} p-4 shadow-lg`}>
-                <form onSubmit={handleSubmit} className="space-y-2.5">
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {[{ name: "name", label: "Full Name *", type: "text", placeholder: "John Doe", required: true },
-                      { name: "company", label: "Company *", type: "text", placeholder: "Your Company", required: true }].map((f) => (
-                      <div key={f.name}>
-                        <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{f.label}</label>
-                        <input type={f.type} name={f.name} required={f.required} value={(formData as any)[f.name]} onChange={handleChange} disabled={isLoading}
-                          className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
-                          placeholder={f.placeholder} />
-                      </div>
-                    ))}
-                  </div>
-
+          {/* Single column form - centered */}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
+            <div className={`rounded-lg border ${borderColor} ${cardBg} p-6 shadow-lg`}>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Email Address *</label>
-                    <input type="email" name="email" required value={formData.email} onChange={handleChange} disabled={isLoading}
+                    <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Full Name *</label>
+                    <input type="text" name="name" required value={formData.name} onChange={handleChange} disabled={isLoading}
                       className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
-                      placeholder="john@company.com" />
+                      placeholder="John Doe" />
                   </div>
+                  <div>
+                    <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Company *</label>
+                    <input type="text" name="company" required value={formData.company} onChange={handleChange} disabled={isLoading}
+                      className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
+                      placeholder="Your Company" />
+                  </div>
+                </div>
 
+                <div>
+                  <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Email Address *</label>
+                  <input type="email" name="email" required value={formData.email} onChange={handleChange} disabled={isLoading}
+                    className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
+                    placeholder="john@company.com" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Your Role</label>
                     <div className="relative">
                       <select name="role" value={formData.role} onChange={handleChange} disabled={isLoading}
-                        className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 appearance-none cursor-pointer ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}>
-                        <option value="">Select role</option>
-                        <option value="C-Level">C-Level Executive</option>
-                        <option value="Director">Director</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Engineer">Engineer</option>
-                        <option value="Other">Other</option>
+                        className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 appearance-none cursor-pointer bg-black/60 border-white/10 text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
+                      >
+                        <option value="" className="bg-black text-gray-400">Select role</option>
+                        <option value="C-Level" className="bg-black text-white">C-Level Executive</option>
+                        <option value="Director" className="bg-black text-white">Director</option>
+                        <option value="Manager" className="bg-black text-white">Manager</option>
+                        <option value="Engineer" className="bg-black text-white">Engineer</option>
+                        <option value="Other" className="bg-black text-white">Other</option>
                       </select>
                       <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-gray-400" />
                     </div>
                   </div>
 
+                  {/* Service Selection - New Field */}
                   <div>
-                    <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Additional Notes</label>
-                    <textarea name="message" rows={2} value={formData.message} onChange={handleChange} disabled={isLoading}
-                      className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 resize-none ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
-                      placeholder="Tell us about your AI governance needs..." />
+                    <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Service Interested In *</label>
+                    <div className="relative">
+                      <select name="service" required value={formData.service} onChange={handleChange} disabled={isLoading}
+                        className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 appearance-none cursor-pointer bg-black/60 border-white/10 text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
+                      >
+                        <option value="" className="bg-black text-gray-400">Select a service</option>
+                        {serviceOptions.map((service) => (
+                          <option key={service.value} value={service.value} className="bg-black text-white">
+                            {service.label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-gray-400" />
+                    </div>
                   </div>
+                </div>
 
-                  {errorMsg && (
-                    <motion.div initial={{ opacity: 0, y: -2 }} animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-1 text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-2 py-1.5">
-                      <AlertCircle className="w-2.5 h-2.5 shrink-0" />
-                      <p className="text-[8px]">{errorMsg}</p>
-                    </motion.div>
-                  )}
-
-                  {formSubmitted && (
-                    <motion.div initial={{ opacity: 0, y: -2 }} animate={{ opacity: 1, y: 0 }}
-                      className={`rounded-lg border px-3 py-2 ${isDark ? 'bg-green-500/10 border-green-500/30' : 'bg-green-50 border-green-300'}`}>
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <CheckCircle className="w-3 h-3 text-green-400 shrink-0" />
-                        <p className="text-green-400 text-[10px] font-semibold">Response sent!</p>
-                      </div>
-                      <p className={`text-[8px] pl-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Our team will respond within 24 hours.</p>
-                    </motion.div>
-                  )}
-
-                  <motion.button type="submit" disabled={isLoading || formSubmitted}
-                    whileHover={{ scale: isLoading || formSubmitted ? 1 : 1.01 }}
-                    whileTap={{ scale: isLoading || formSubmitted ? 1 : 0.99 }}
-                    className="w-full group rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 py-2 text-[10px] font-semibold text-white shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 flex items-center justify-center gap-1.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                {/* Service Description - Shows when service is selected */}
+                {formData.service && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`rounded-lg p-2.5 border ${isDark ? 'bg-blue-500/5 border-blue-500/20' : 'bg-blue-50 border-blue-200'}`}
                   >
-                    {formSubmitted ? (<><CheckCircle className="w-3 h-3" />Response Sent!</>)
-                      : isLoading ? (<><svg className="w-2.5 h-2.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Submitting...</>)
-                      : (<>Request Demo<Send className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" /></>)}
-                  </motion.button>
-                </form>
-                <p className={`text-[7px] text-center mt-2.5 ${textSecondary}`}>No commitment. Your data is secure.</p>
-              </div>
-            </motion.div>
-          </div>
+                    <div className="flex items-start gap-2">
+                      <div className="mt-0.5">
+                        {React.createElement(serviceOptions.find(s => s.value === formData.service)!.icon, {
+                          className: `w-3 h-3 ${isDark ? 'text-blue-400' : 'text-blue-500'}`
+                        })}
+                      </div>
+                      <div>
+                        <p className={`text-[9px] font-medium ${textPrimary}`}>
+                          {serviceOptions.find(s => s.value === formData.service)?.label}
+                        </p>
+                        <p className={`text-[8px] ${textSecondary} mt-0.5`}>
+                          {serviceOptions.find(s => s.value === formData.service)?.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                <div>
+                  <label className={`block text-[9px] font-medium mb-0.5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Additional Notes</label>
+                  <textarea name="message" rows={2} value={formData.message} onChange={handleChange} disabled={isLoading}
+                    className={`w-full px-2.5 py-1.5 rounded-lg border text-[10px] transition-all duration-300 resize-none ${inputBg} focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50`}
+                    placeholder="Tell us about your AI governance needs, use case, or any specific requirements..." />
+                </div>
+
+                {errorMsg && (
+                  <motion.div initial={{ opacity: 0, y: -2 }} animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-1 text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-2 py-1.5">
+                    <AlertCircle className="w-2.5 h-2.5 shrink-0" />
+                    <p className="text-[8px]">{errorMsg}</p>
+                  </motion.div>
+                )}
+
+                {formSubmitted && (
+                  <motion.div initial={{ opacity: 0, y: -2 }} animate={{ opacity: 1, y: 0 }}
+                    className={`rounded-lg border px-3 py-2 ${isDark ? 'bg-green-500/10 border-green-500/30' : 'bg-green-50 border-green-300'}`}>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <CheckCircle className="w-3 h-3 text-green-400 shrink-0" />
+                      <p className="text-green-400 text-[10px] font-semibold">Request Sent Successfully!</p>
+                    </div>
+                    <p className={`text-[8px] pl-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Our team will respond within 24 hours.</p>
+                  </motion.div>
+                )}
+
+                <motion.button type="submit" disabled={isLoading || formSubmitted}
+                  whileHover={{ scale: isLoading || formSubmitted ? 1 : 1.01 }}
+                  whileTap={{ scale: isLoading || formSubmitted ? 1 : 0.99 }}
+                  className="w-full group rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 py-2 text-[10px] font-semibold text-white shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 flex items-center justify-center gap-1.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {formSubmitted ? (<><CheckCircle className="w-3 h-3" />Request Sent!</>)
+                    : isLoading ? (<><svg className="w-2.5 h-2.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Submitting...</>)
+                    : (<>Submit Request<Send className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" /></>)}
+                </motion.button>
+              </form>
+              <p className={`text-[7px] text-center mt-2.5 ${textSecondary}`}>No commitment. Your data is secure. We'll never share your information.</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

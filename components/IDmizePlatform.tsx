@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowUpRight, 
   Shield, 
@@ -11,28 +11,29 @@ import {
   FileText, 
   GitFork,
   Sparkles,
-  Lock,
-  Fingerprint
+  Lock
 } from 'lucide-react';
+
+interface FeatureCardProps {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+  icon: React.ComponentType<any>;
+  badge?: string;
+  index: number;
+}
 
 const FeatureCard = ({ 
   title, 
   description, 
   children, 
   icon: Icon, 
-  gradient,
-  badge
-}: { 
-  title: string; 
-  description: string; 
-  children: React.ReactNode; 
-  icon?: any; 
-  gradient: string;
-  badge?: string;
-}) => {
+  badge,
+  index
+}: FeatureCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = React.useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = React.useState(false);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -49,52 +50,63 @@ const FeatureCard = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4 }}
-      className="group relative p-5 rounded-xl overflow-hidden transition-all duration-300 bg-black/40 border border-white/5 hover:border-blue-500/30"
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative p-6 rounded-xl overflow-hidden bg-zinc-950/40 border border-zinc-900 transition-colors duration-500 hover:bg-zinc-950/60 hover:border-zinc-800"
     >
-      {hovered && (
-        <div 
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(350px circle at ${coords.x}px ${coords.y}px, rgba(59, 130, 246, 0.08), transparent 80%)`
-          }}
-        />
-      )}
+      {/* Premium Minimal Spotlight Effect */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500 raw-spotlight"
+        style={{
+          background: `radial-gradient(250px circle at ${coords.x}px ${coords.y}px, rgba(255, 255, 255, 0.035), transparent 80%)`,
+          opacity: hovered ? 1 : 0
+        }}
+      />
 
-      <div className="relative z-10">
-        <div className="flex items-center justify-between gap-3 mb-4">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className={`p-1.5 rounded-lg bg-gradient-to-br ${gradient} bg-opacity-10 flex-shrink-0`}>
-              <Icon size={14} className="text-white" />
+      <div className="relative z-10 flex flex-col h-full justify-between">
+        <div>
+          {/* Header row */}
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 group-hover:text-white group-hover:border-zinc-700 transition-colors duration-300">
+                <Icon size={15} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-sm font-medium tracking-tight text-zinc-200">
+                {title}
+              </h3>
             </div>
-            <h3 className="text-sm font-semibold text-white truncate">
-              {title}
-            </h3>
+            {badge && (
+              <span className="text-[10px] font-mono tracking-tight px-2 py-0.5 rounded-md border bg-zinc-900 border-zinc-800 text-zinc-400">
+                {badge}
+              </span>
+            )}
           </div>
-          {badge && (
-            <span className="text-[8px] font-medium px-2 py-0.5 rounded-full border bg-blue-500/10 border-blue-500/20 text-blue-400 whitespace-nowrap flex-shrink-0">
-              {badge}
+
+          {/* Interactive Graphic Container */}
+          <div className="mb-6 h-36 rounded-lg overflow-hidden flex items-center justify-center bg-zinc-950 border border-zinc-900 relative">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.01),transparent_70%)]" />
+            {children}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-xs leading-relaxed text-zinc-400 font-normal mb-5">
+            {description}
+          </p>
+
+          <div className="pt-4 border-t border-zinc-900/80 flex items-center justify-between group-hover:border-zinc-800 transition-colors duration-500">
+            <span className="text-[11px] font-medium tracking-tight text-zinc-500 group-hover:text-zinc-300 transition-colors duration-300">
+              Explore Architecture
             </span>
-          )}
-        </div>
-
-        <div className="mb-4 h-44 rounded-lg overflow-hidden flex items-center justify-center bg-black/30">
-          {children}
-        </div>
-
-        <p className="text-xs leading-relaxed mb-4 text-gray-400">
-          {description}
-        </p>
-
-        <div className="pt-3 border-t border-dashed border-white/5 flex items-center justify-between">
-          <span className="text-[10px] font-medium transition-colors text-gray-500 group-hover:text-gray-300">
-            Learn more
-          </span>
-          <div className="w-7 h-7 rounded-full border border-white/10 text-gray-400 flex items-center justify-center transition-all group-hover:bg-white group-hover:text-black group-hover:border-white group-hover:rotate-45">
-            <ArrowUpRight size={11} />
+            <motion.div 
+              animate={{ x: hovered ? 2 : 0, y: hovered ? -2 : 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="text-zinc-500 group-hover:text-white"
+            >
+              <ArrowUpRight size={14} strokeWidth={1.5} />
+            </motion.div>
           </div>
         </div>
       </div>
@@ -106,37 +118,25 @@ export default function IDmizePlatform() {
   const features = [
     {
       title: "Secure Identity Foundation",
-      description: "A comprehensive toolkit to issue, manage, and govern zero-knowledge identities for both human workforces and AI entities.",
+      description: "A comprehensive toolkit to issue, manage, and govern zero-knowledge identities for both human workforces and autonomous AI entities.",
       icon: Shield,
-      badge: "Zero Knowledge",
-      gradient: "from-blue-600 to-indigo-600",
+      badge: "ZKP-Auth",
       illustration: (
-        <div className="relative w-full h-full flex items-center justify-center">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)]" />
-          
+        <div className="relative flex items-center justify-center w-full h-full">
           <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-            className="absolute w-20 h-20 border border-dashed border-blue-500/20 rounded-full flex items-center justify-center"
+            transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+            className="w-20 h-20 border border-dashed border-zinc-800 rounded-full flex items-center justify-center"
           />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-            className="absolute w-14 h-14 border border-blue-400/10 rounded-full"
-          />
-
-          <div className="relative z-10 p-2.5 bg-gradient-to-b from-blue-600/10 to-transparent border border-blue-500/30 rounded-2xl shadow-xl backdrop-blur-md">
+          <div className="absolute w-12 h-12 rounded-xl bg-zinc-900/50 border border-zinc-800 backdrop-blur-sm flex items-center justify-center shadow-2xl">
             <motion.div
-              animate={{ scale: [0.97, 1.03, 0.97] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <Fingerprint className="text-blue-500" size={22} />
+              <Lock className="text-zinc-400 w-4 h-4" strokeWidth={1.5} />
             </motion.div>
-            <Lock className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-slate-950 text-indigo-400 rounded-full p-0.5 border border-blue-500/30" />
           </div>
-
-          <div className="absolute top-5 left-1/4 w-1.5 h-1.5 rounded-full bg-indigo-500/60 animate-ping" />
-          <div className="absolute bottom-5 right-1/4 w-1 h-1 rounded-full bg-blue-400" />
+          <span className="absolute bottom-4 text-[9px] font-mono text-zinc-600">0x71C...84B</span>
         </div>
       )
     },
@@ -145,42 +145,23 @@ export default function IDmizePlatform() {
       description: "Identify, map, and index corporate knowledge assets safely across open-source and proprietary enterprise intelligence networks.",
       icon: Search,
       badge: "Vector Graph",
-      gradient: "from-emerald-500 to-teal-500",
       illustration: (
-        <div className="relative w-full h-full flex items-center justify-center">
-          <svg className="w-28 h-20" viewBox="0 0 140 80" fill="none">
-            <path d="M 15,40 L 45,15 L 95,15 L 125,40 L 95,65 L 45,65 Z" stroke="#10b981" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4"/>
-            <line x1="15" y1="40" x2="95" y2="15" stroke="#10b981" strokeWidth="0.6" opacity="0.3"/>
-            <line x1="45" y1="65" x2="125" y2="40" stroke="#10b981" strokeWidth="0.6" opacity="0.3"/>
-            
-            <circle cx="15" cy="40" r="3.5" className="fill-emerald-500/30 stroke-emerald-500" strokeWidth="0.8" />
-            <circle cx="45" cy="15" r="2.5" className="fill-emerald-400/60" />
-            <circle cx="45" cy="65" r="2.5" className="fill-emerald-400/60" />
-            <circle cx="95" cy="15" r="2.5" className="fill-emerald-400/60" />
-            <circle cx="95" cy="65" r="2.5" className="fill-emerald-400/60" />
-            <circle cx="125" cy="40" r="3.5" className="fill-emerald-500/30 stroke-emerald-500" strokeWidth="0.8" />
-
-            <motion.circle 
-              animate={{ 
-                cx: [15, 45, 95, 125, 95, 45, 15],
-                cy: [40, 15, 15, 40, 65, 65, 40]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-              r="1.5" 
-              className="fill-emerald-400"
-            />
-          </svg>
-
-          <motion.div 
-            animate={{ 
-              x: [-12, 12, -12],
-              y: [-8, 8, -8]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute p-1 rounded-md bg-emerald-950/40 border border-emerald-400/40 backdrop-blur-sm"
-          >
-            <Search className="text-emerald-400" size={10} />
-          </motion.div>
+        <div className="flex flex-col gap-2 w-36">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-6 rounded border border-zinc-900 bg-zinc-900/30 flex items-center justify-between px-2.5 relative overflow-hidden">
+              <div className="flex items-center gap-2">
+                <div className={`w-1 h-1 rounded-full ${i === 0 ? 'bg-blue-500 animate-pulse' : 'bg-zinc-700'}`} />
+                <div className="h-1.5 w-16 bg-zinc-800 rounded-sm" />
+              </div>
+              <div className="h-1 w-6 bg-zinc-800 rounded-sm" />
+              {i === 0 && (
+                <motion.div 
+                  layoutId="activeLine" 
+                  className="absolute bottom-0 left-0 right-0 h-[1px] bg-zinc-700" 
+                />
+              )}
+            </div>
+          ))}
         </div>
       )
     },
@@ -189,262 +170,147 @@ export default function IDmizePlatform() {
       description: "Deploy autonomous AI agents with context-specific guardrails. Accept API commands while enforcing strict real-time policy compliance.",
       icon: Zap,
       badge: "Real-time",
-      gradient: "from-amber-500 to-orange-500",
       illustration: (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-          <div className="absolute w-40 h-40 rounded-full bg-amber-500/10 blur-3xl" />
-          
-          <svg className="w-full h-full p-1 max-w-[260px]" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 20,95 L 80,45 L 145,45 L 180,95 Z" fill="#1e1b4b" fillOpacity="0.2" stroke="#f59e0b" strokeWidth="1" />
-            <line x1="83" y1="48" x2="135" y2="48" stroke="#d97706" strokeWidth="1" />
-            <line x1="70" y1="58" x2="145" y2="58" stroke="#d97706" strokeWidth="1" />
-            <line x1="50" y1="73" x2="160" y2="73" stroke="#d97706" strokeWidth="1" />
-
-            <motion.g 
-              animate={{ y: [0, -1.5, 0], x: [0, 1.5, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              transform="translate(45, 48)"
-            >
-              <rect x="15" y="12" width="44" height="18" rx="9" fill="#1e293b" stroke="#38bdf8" strokeWidth="1.5" />
-              <path d="M 25,12 C 25,6 45,6 45,12 Z" fill="#0284c7" fillOpacity="0.6" stroke="#38bdf8" strokeWidth="1" />
-              <circle cx="50" cy="18" r="2.5" fill="#38bdf8" className="animate-pulse" />
-              <circle cx="23" cy="30" r="5" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
-              <circle cx="23" cy="30" r="1.5" fill="#38bdf8" />
-              <circle cx="51" cy="30" r="5" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
-              <circle cx="51" cy="30" r="1.5" fill="#38bdf8" />
-            </motion.g>
-
-            <g transform="translate(25, 78)">
-              <polygon points="5,15 11,0 15,0 21,15" fill="#f57c00" />
-              <rect x="2" y="15" width="22" height="2" rx="0.5" fill="#d84315" />
-              <rect x="8" y="5" width="10" height="3" fill="#ffffff" />
-            </g>
-
-            <g transform="translate(155, 68)">
-              <polygon points="4,12 9,0 12,0 17,12" fill="#f57c00" />
-              <rect x="1" y="12" width="18" height="1.8" rx="0.5" fill="#d84315" />
-              <rect x="6" y="4" width="8" height="2.2" fill="#ffffff" />
-            </g>
-
-            <g transform="translate(15, 12)">
-              <rect x="5" y="5" width="45" height="26" rx="4" fill="#0f172a" stroke="#f59e0b" strokeWidth="1" />
-              <rect x="5" y="5" width="45" height="7" rx="1" fill="#78350f" />
-              <circle cx="10" cy="8.5" r="1" fill="#ef4444" />
-              <circle cx="13" cy="8.5" r="1" fill="#eab308" />
-              <circle cx="16" cy="8.5" r="1" fill="#22c55e" />
-              <text x="9" y="21" fill="#f59e0b" fontSize="7" fontFamily="monospace">API OK</text>
-              <path d="M 34,16 L 37,19 L 43,13" stroke="#22c55e" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </g>
-
-            <g transform="translate(140, 10)">
-              <path d="M 15,2 L 2,6 V 16 C 2,22 15,28 15,28 C 15,28 28,22 28,16 V 6 L 15,2 Z" fill="#047857" fillOpacity="0.3" stroke="#10b981" strokeWidth="1.5" />
-              <path d="M 10,14 L 14,18 L 21,11" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </g>
-          </svg>
-        </div>
-      )
-    },
-    {
-      title: "Unified Multi-Layer Governance",
-      description: "A centralized engine for enforcing granular security policies, managing group permissions, and controlling AI access across all departments.",
-      icon: Layers,
-      badge: "Policy Engine",
-      gradient: "from-purple-500 to-pink-500",
-      illustration: (
-        <div className="relative w-full h-full flex items-center justify-center px-4">
-          <div className="w-full max-w-[160px] space-y-2.5">
-            
-            <motion.div 
-              whileHover={{ x: 3 }}
-              className="flex items-center justify-between px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-lg"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-[7px] font-bold px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded font-mono">L3</span>
-                <span className="text-[8px] font-medium text-purple-100">AI Agent Sandbox</span>
-              </div>
-              <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ x: 2 }}
-              className="flex items-center justify-between px-3 py-2 bg-fuchsia-500/10 border border-fuchsia-500/20 rounded-lg"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-[7px] font-bold px-1.5 py-0.5 bg-fuchsia-500/20 text-fuchsia-300 rounded font-mono">L2</span>
-                <span className="text-[8px] font-medium text-fuchsia-100">Enterprise Access</span>
-              </div>
-              <span className="text-[6px] px-1.5 bg-fuchsia-500/20 text-fuchsia-300 rounded">Active</span>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ x: 1 }}
-              className="flex items-center justify-between px-3 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-lg"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-[7px] font-bold px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 rounded font-mono">L1</span>
-                <span className="text-[8px] font-medium text-indigo-100">Consent Verification</span>
-              </div>
-              <span className="text-[6px] px-1.5 bg-emerald-500/20 text-emerald-300 rounded">On</span>
-            </motion.div>
+        <div className="relative flex items-center justify-center w-full h-full gap-2">
+          <div className="flex flex-col gap-1 items-end">
+            <div className="w-10 h-1.5 bg-zinc-900 rounded-sm" />
+            <div className="w-14 h-1.5 bg-zinc-800 rounded-sm" />
+          </div>
+          <motion.div 
+            animate={{ scale: [1, 1.08, 1], borderColor: ["#27272a", "#52525b", "#27272a"] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="p-2 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-300 z-10 font-mono text-[9px]"
+          >
+            GUARD
+          </motion.div>
+          <div className="flex flex-col gap-1 items-start">
+            <div className="w-12 h-1.5 bg-zinc-800 rounded-sm" />
+            <div className="w-8 h-1.5 bg-zinc-900 rounded-sm" />
           </div>
         </div>
       )
     },
     {
-      title: "Immutable Audit Trails",
-      description: "Maintain a tamper-proof cryptographic ledger of all prompt interactions and classification logs for GDPR and EU AI Act regulatory audits.",
-      icon: FileText,
-      badge: "Cryptographic",
-      gradient: "from-rose-500 to-red-600",
+      title: "Unified Multi-Layer Governance",
+      description: "A centralized engine for enforcing granular security policies, managing group permissions, and controlling AI access across all ecosystems.",
+      icon: Layers,
+      badge: "Engine",
       illustration: (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-          <div className="absolute w-40 h-40 rounded-full bg-rose-500/10 blur-3xl" />
-          
-          <svg className="w-full h-full p-2 max-w-[260px]" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(45, 45) rotate(-20)">
-              <rect x="0" y="5" width="35" height="15" rx="7.5" fill="none" stroke="#f43f5e" strokeWidth="4.5" />
-              <rect x="23" y="10" width="22" height="5" rx="2.5" fill="#fb7185" />
-              <rect x="35" y="5" width="35" height="15" rx="7.5" fill="none" stroke="#e11d48" strokeWidth="4.5" />
-              <rect x="58" y="10" width="22" height="5" rx="2.5" fill="#fb7185" />
-              <rect x="70" y="5" width="35" height="15" rx="7.5" fill="none" stroke="#9f1239" strokeWidth="4.5" />
-            </g>
-
-            <g transform="translate(15, 12)">
-              <rect x="5" y="5" width="38" height="28" rx="3" fill="#0f172a" stroke="#be123c" strokeWidth="1" />
-              <line x1="10" y1="12" x2="28" y2="12" stroke="#fda4af" strokeWidth="1.5" />
-              <line x1="10" y1="18" x2="32" y2="18" stroke="#be123c" strokeWidth="1" />
-              <line x1="10" y1="23" x2="24" y2="23" stroke="#be123c" strokeWidth="1" />
-              <circle cx="32" cy="11" r="2.5" fill="#f43f5e" />
-            </g>
-
-            <g transform="translate(135, 12)">
-              <rect x="0" y="0" width="50" height="20" rx="4" fill="#311019" stroke="#f43f5e" strokeWidth="0.8" />
-              <text x="6" y="12" fill="#fda4af" fontSize="7" fontFamily="sans-serif" fontWeight="bold">GDPR COMPLIANT</text>
-            </g>
-
-            <g transform="translate(135, 70)">
-              <path d="M 20,4 L 38,12 L 20,20 L 2,12 Z" fill="#881337" stroke="#f43f5e" strokeWidth="1" />
-              <path d="M 2,12 L 2,26 L 20,34 L 20,20 Z" fill="#4c0519" stroke="#f43f5e" strokeWidth="1" />
-              <path d="M 20,20 L 20,34 L 38,26 L 38,12 Z" fill="#5c0620" stroke="#f43f5e" strokeWidth="1" />
-              <circle cx="20" cy="22" r="3" fill="#f43f5e" />
-              <line x1="20" y1="22" x2="20" y2="28" stroke="#ffffff" strokeWidth="1" />
-            </g>
-          </svg>
+        <div className="relative flex flex-col items-center justify-center w-full h-full space-y-[-8px]">
+          {[0, 1, 2].map((layer) => (
+            <motion.div
+              key={layer}
+              style={{ zIndex: 3 - layer }}
+              whileHover={{ y: -4 }}
+              className="w-32 h-7 rounded-md border border-zinc-800 bg-zinc-950/90 backdrop-blur-md flex items-center px-3 shadow-xl justify-between"
+            >
+              <div className="h-1.5 w-12 bg-zinc-800 rounded-sm" />
+              <div className={`w-1.5 h-1.5 rounded-full ${layer === 0 ? 'bg-emerald-500' : 'bg-zinc-800'}`} />
+            </motion.div>
+          ))}
+        </div>
+      )
+    },
+    {
+      title: "Immutable Audit Trails",
+      description: "Maintain a tamper-proof cryptographic ledger of all prompt interactions and classification logs for GDPR and compliance audits.",
+      icon: FileText,
+      badge: "Ledger",
+      illustration: (
+        <div className="flex gap-1.5 items-center justify-center w-full h-full">
+          {[0, 1, 2].map((b) => (
+            <motion.div 
+              key={b}
+              animate={{ y: [0, b % 2 === 0 ? -3 : 3, 0] }}
+              transition={{ duration: 4, repeat: Infinity, delay: b * 0.2, ease: "easeInOut" }}
+              className="w-10 h-12 rounded border border-zinc-900 bg-zinc-900/20 p-1.5 flex flex-col justify-between"
+            >
+              <div className="space-y-1">
+                <div className="h-1 w-full bg-zinc-800 rounded-sm" />
+                <div className="h-1 w-2/3 bg-zinc-800 rounded-sm" />
+              </div>
+              <div className="h-1 w-full bg-zinc-900 rounded-sm" />
+            </motion.div>
+          ))}
         </div>
       )
     },
     {
       title: "Model-Agnostic Routing",
-      description: "Seamlessly route queries, cache recurrent prompts, and orchestrate workflows between OpenAI, Anthropic, Gemini, and local LLMs while preventing vendor lock-in.",
+      description: "Seamlessly route queries, cache recurrent prompts, and orchestrate workflows between OpenAI, Gemini, and local weights architecture.",
       icon: GitFork,
-      badge: "Multi-LLM Hub",
-      gradient: "from-cyan-500 to-sky-600",
+      badge: "Multi-LLM",
       illustration: (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-          <div className="absolute w-40 h-40 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="relative w-40 h-16 flex items-center justify-between">
+          <div className="w-5 h-5 rounded-md border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[8px] font-mono text-zinc-400">IN</div>
           
-          <svg className="w-full h-full p-2 max-w-[260px]" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(75, 42)">
-              <rect x="0" y="0" width="50" height="36" rx="6" fill="#083344" stroke="#06b6d4" strokeWidth="1.5" />
-              <path d="M 10,18 H 40 M 40,18 L 34,12 M 40,18 L 34,24" stroke="#22d3ee" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M 40,18 H 10 M 10,18 L 16,12 M 10,18 L 16,24" stroke="#0891b2" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="25" cy="8" r="1.5" fill="#22d3ee" className="animate-ping" />
-            </g>
+          <div className="absolute inset-x-5 top-1/2 h-[1px] bg-zinc-900 -translate-y-1/2 dotted-track">
+            <motion.div 
+              animate={{ left: ["0%", "100%"] }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+              className="absolute top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-zinc-400"
+            />
+          </div>
 
-            <g transform="translate(15, 45)">
-              <circle cx="15" cy="15" r="12" fill="#0f172a" stroke="#06b6d4" strokeWidth="1" />
-              <circle cx="15" cy="15" r="8" stroke="#0891b2" strokeWidth="0.8" />
-              <line x1="15" y1="3" x2="15" y2="27" stroke="#0891b2" strokeWidth="0.8" />
-              <line x1="3" y1="15" x2="27" y2="15" stroke="#0891b2" strokeWidth="0.8" />
-              <motion.path 
-                animate={{ x: [0, 45] }} 
-                transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-                d="M 27,15 H 60" 
-                stroke="#22d3ee" 
-                strokeWidth="1.5" 
-                strokeDasharray="3 3" 
-              />
-            </g>
-
-            <g opacity="0.8" stroke="#06b6d4" strokeWidth="1">
-              <path d="M 125,50 C 135,35 145,25 155,25" />
-              <path d="M 125,60 H 155" />
-              <path d="M 125,70 C 135,85 145,95 155,95" />
-            </g>
-
-            <g transform="translate(155, 12)">
-              <rect x="0" y="0" width="30" height="20" rx="4" fill="#0f172a" stroke="#0891b2" strokeWidth="1" />
-              <text x="6" y="13" fill="#22d3ee" fontSize="8" fontWeight="bold">GPT</text>
-            </g>
-
-            <g transform="translate(155, 50)">
-              <rect x="0" y="0" width="30" height="20" rx="4" fill="#0f172a" stroke="#0891b2" strokeWidth="1" />
-              <text x="6" y="13" fill="#22d3ee" fontSize="8" fontWeight="bold">GEM</text>
-            </g>
-
-            <g transform="translate(155, 88)">
-              <rect x="0" y="0" width="30" height="20" rx="4" fill="#0f172a" stroke="#0891b2" strokeWidth="1" />
-              <text x="6" y="13" fill="#22d3ee" fontSize="8" fontWeight="bold">LOC</text>
-            </g>
-
-            <g transform="translate(85, 90)">
-              <rect x="2" y="2" width="26" height="16" rx="3" fill="#1e293b" stroke="#06b6d4" strokeWidth="1" />
-              <line x1="6" y1="7" x2="24" y2="7" stroke="#0891b2" strokeWidth="1" />
-              <line x1="6" y1="12" x2="20" y2="12" stroke="#0891b2" strokeWidth="1" />
-              <circle cx="23" cy="12" r="1" fill="#22d3ee" />
-            </g>
-          </svg>
+          <div className="flex flex-col gap-1.5">
+            <div className="text-[8px] font-mono px-1.5 py-0.5 rounded border border-zinc-900 bg-zinc-950 text-zinc-500">GPT</div>
+            <div className="text-[8px] font-mono px-1.5 py-0.5 rounded border border-zinc-800 bg-zinc-900 text-zinc-300">GEM</div>
+            <div className="text-[8px] font-mono px-1.5 py-0.5 rounded border border-zinc-900 bg-zinc-950 text-zinc-500">LOC</div>
+          </div>
         </div>
       )
     }
   ];
 
   return (
-    <section className="py-16 bg-black relative overflow-hidden">
-      
-      {/* Ambient backgrounds */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.02] via-transparent to-purple-500/[0.02] pointer-events-none" />
+    <section className="py-24 bg-black relative overflow-hidden selection:bg-zinc-800 selection:text-white">
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#09090b_1px,transparent_1px),linear-gradient(to_bottom,#09090b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-12">
+        {/* Minimal Header */}
+        <div className="max-w-2xl mb-16">
           <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-medium mb-4 border border-blue-500/20 bg-blue-500/5 text-blue-400"
+            initial={{ opacity: 0, x: -5 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-2 py-0.5 rounded border border-zinc-900 bg-zinc-900/30 text-[10px] font-mono tracking-tight mb-4 text-zinc-400"
           >
-            <Sparkles size={9} />
-            IDMIZE PLATFORM
+            <Sparkles size={10} className="text-zinc-500" />
+            CORE CONTEXT ENGINE
           </motion.div>
           
           <motion.h2 
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl md:text-3xl font-bold tracking-tight mb-3 text-white"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-3xl font-normal tracking-tight mb-4 text-zinc-100"
           >
-            Everything you need in one
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"> platform</span>
+            Cryptographic orchestration for <span className="text-zinc-400">multi-agent systems.</span>
           </motion.h2>
           
           <motion.p 
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xs max-w-lg mx-auto text-gray-400"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xs text-zinc-500 max-w-md font-normal leading-relaxed"
           >
-            Complete cryptographic ecosystem for building, verifying, and safeguarding multi-agent AI systems
+            Complete architectural layer for deploying, validating, and protecting high-frequency enterprise intelligence pipelines.
           </motion.p>
         </div>
 
-        {/* Features Grid - 3x2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* 3x2 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((feature, idx) => (
             <FeatureCard
               key={idx}
+              index={idx}
               title={feature.title}
               description={feature.description}
               icon={feature.icon}
-              gradient={feature.gradient}
               badge={feature.badge}
             >
               {feature.illustration}
@@ -452,17 +318,17 @@ export default function IDmizePlatform() {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="mt-12 text-center">
-          <p className="text-[11px] mb-3 text-gray-500">
-            Trusted by 50+ enterprise teams worldwide
+        {/* Bottom Actions */}
+        <div className="mt-16 pt-8 border-t border-zinc-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[11px] font-mono text-zinc-600">
+            // STATUS: PRODUCTION READY SECURE INFRASTRUCTURE
           </p>
           <motion.button 
-            whileHover={{ scale: 1.01 }}
+            whileHover={{ scale: 1.01, backgroundColor: "#f4f4f5" }}
             whileTap={{ scale: 0.99 }}
-            className="text-xs font-medium px-5 py-2.5 rounded-lg transition-all inline-flex items-center gap-1.5 bg-white text-black hover:bg-gray-200"
+            className="text-xs font-medium px-4 py-2 rounded-md transition-colors bg-zinc-100 text-black inline-flex items-center gap-1.5"
           >
-            Explore platform <ArrowUpRight size={11} />
+            Initialize Platform <ArrowUpRight size={13} />
           </motion.button>
         </div>
       </div>

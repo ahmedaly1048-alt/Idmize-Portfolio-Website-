@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IDmize",
-  description: "AI Governance Platform",
+  title: "Idmize: AI Governance Layer for Workforce Intelligence",
+  description: "Idmize provides an enterprise AI governance and orchestration layer, allowing organizations to securely manage how employees interact with AI over organizational knowledge.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -32,7 +34,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <GoogleAnalytics />
+        <CookieConsent />
+      </body>
     </html>
   );
 }

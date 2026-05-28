@@ -17,14 +17,14 @@ import AboutPage from "../../components/AboutPage";
 import ContactSection from "../../components/ContactSection";
 import Footer from "../../components/Footer";
 
-type Page = 'home' | 'about' | 'pricing';
+type Page = "home" | "about" | "pricing";
 
 export default function LandingPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [isMounted, setIsMounted] = useState(false);
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [currentPage, setCurrentPage] = useState<Page>("home");
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -35,49 +35,53 @@ export default function LandingPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    if (savedTheme === 'light' || savedTheme === 'dark') {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme === "light" || savedTheme === "dark") {
       setTheme(savedTheme);
     }
   }, []);
 
   // Scroll to top whenever the page changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem("theme", newTheme);
   }, [theme]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress =
+        totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
       setScrollProgress(progress);
       setShowScrollTop(window.scrollY > 500);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Single navigate handler — always updates currentPage
   const handleNavigate = useCallback((pageId: string) => {
-    if (pageId === 'home' || pageId === 'about' || pageId === 'pricing') {
+    if (pageId === "home" || pageId === "about" || pageId === "pricing") {
       setCurrentPage(pageId as Page);
     }
   }, []);
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
   if (!isMounted) return null;
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-gray-50'}`}>
+    <div
+      className={`min-h-screen transition-colors duration-300 ${isDark ? "bg-black" : "bg-gray-50"}`}
+    >
       {/* ── Scroll Progress Bar ─────────────────────────────────────────── */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 z-[10000] origin-left"
@@ -89,26 +93,26 @@ export default function LandingPage() {
         theme={theme}
         onThemeToggle={toggleTheme}
         onNavigate={handleNavigate}
-        activePage={currentPage}          // ← drives the active indicator
+        activePage={currentPage} // ← drives the active indicator
       />
 
       {/* ── Page Content ────────────────────────────────────────────────── */}
-      {currentPage === 'about' && (
+      {currentPage === "about" && (
         <AboutPage theme={theme} onNavigate={handleNavigate} />
       )}
 
-      {currentPage === 'pricing' && (
+      {currentPage === "pricing" && (
         <RequestDemoPage
           theme={theme}
           onThemeToggle={toggleTheme}
-          onClose={() => handleNavigate('home')}
+          onClose={() => handleNavigate("home")}
           onNavigate={handleNavigate}
         />
       )}
 
-      {currentPage === 'home' && (
+      {currentPage === "home" && (
         <main>
-          <Hero theme={theme} onGetStarted={() => handleNavigate('pricing')} />
+          <Hero theme={theme} onGetStarted={() => handleNavigate("pricing")} />
           <LogoWall theme={theme} />
           <FeaturesList theme={theme} />
           <ArchitectureSection theme={theme} />
@@ -118,8 +122,55 @@ export default function LandingPage() {
           <IDmizePlatform />
           <ContactSection theme={theme} />
 
+          {/* ── Enhanced WhatsApp Floating Contact Button ───────────────────────── */}
+          <motion.a
+            href="https://wa.me/37068667554"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`fixed bottom-20 right-6 z-[10000] backdrop-blur-md rounded-full px-3.5 py-2.5 border shadow-lg transition-all duration-300 group flex items-center gap-2
+    ${
+      isDark
+        ? "bg-black/80 border-emerald-500/40 hover:bg-emerald-500/10 shadow-emerald-500/5 hover:shadow-emerald-500/20"
+        : "bg-white/90 border-emerald-200 hover:bg-emerald-50 shadow-emerald-600/5 hover:shadow-emerald-600/10"
+    }`}
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            aria-label="Contact via WhatsApp"
+          >
+            {/* Breathing Pulse Effect Container */}
+            <span className="absolute inset-0 rounded-full pointer-events-none block overflow-hidden">
+              <span
+                className="absolute inset-0 rounded-full bg-emerald-500/10 animate-ping opacity-75"
+                style={{ animationDuration: "2.5s" }}
+              />
+            </span>
+
+            {/* WhatsApp SVG Icon */}
+            <svg
+              className={`w-4 h-4 relative z-10 transition-transform duration-300 group-hover:rotate-[6deg] 
+      ${isDark ? "text-emerald-400" : "text-emerald-600"}`}
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.454 5.709 1.455h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+
+            {/* Clean Text Label */}
+            <span
+              className={`text-[11px] font-medium tracking-wide relative z-10 hidden sm:inline-block
+    ${isDark ? "text-gray-300 group-hover:text-white" : "text-gray-700 group-hover:text-emerald-950"}`}
+            >
+              Chat with us
+            </span>
+          </motion.a>
+
           {/* CTA Section */}
-          <section className={`relative py-24 overflow-hidden transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-gray-50'}`}>
+          <section
+            className={`relative py-24 overflow-hidden transition-colors duration-300 ${isDark ? "bg-black" : "bg-gray-50"}`}
+          >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
             <div className="container mx-auto px-6 text-center relative z-10">
@@ -129,26 +180,37 @@ export default function LandingPage() {
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6 transition-colors duration-300
-                  ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'}`}>
-                  <Sparkles className={`w-3 h-3 ${isDark ? 'text-blue-400' : 'text-blue-500'}`} />
-                  <span className={`text-[10px] font-medium uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6 transition-colors duration-300
+                  ${isDark ? "bg-white/[0.02] border border-white/5" : "bg-white border border-gray-200 shadow-sm"}`}
+                >
+                  <Sparkles
+                    className={`w-3 h-3 ${isDark ? "text-blue-400" : "text-blue-500"}`}
+                  />
+                  <span
+                    className={`text-[10px] font-medium uppercase tracking-wider ${isDark ? "text-gray-400" : "text-gray-500"}`}
+                  >
                     Get Started
                   </span>
                 </div>
-                <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-3 leading-[1.2] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Ready to{' '}
+                <h2
+                  className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-3 leading-[1.2] ${isDark ? "text-white" : "text-gray-900"}`}
+                >
+                  Ready to{" "}
                   <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                     Transform
-                  </span>
-                  {' '}Your AI Governance?
+                  </span>{" "}
+                  Your AI Governance?
                 </h2>
-                <p className={`max-w-xl mx-auto text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                  Join leading enterprises using IDmize to secure their AI infrastructure
+                <p
+                  className={`max-w-xl mx-auto text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}
+                >
+                  Join leading enterprises using IDmize to secure their AI
+                  infrastructure
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3 justify-center">
                   <motion.button
-                    onClick={() => handleNavigate('pricing')}
+                    onClick={() => handleNavigate("pricing")}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="group rounded-lg px-6 py-2.5 text-xs font-semibold text-white shadow-lg bg-gradient-to-r from-blue-600 to-blue-500 shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300"
@@ -170,9 +232,11 @@ export default function LandingPage() {
       <motion.button
         onClick={toggleTheme}
         className={`fixed bottom-6 right-6 z-[10000] backdrop-blur-md rounded-full p-2.5 border shadow-lg transition-all duration-300 group
-          ${isDark
-            ? 'bg-black/80 border-blue-500/30 hover:bg-blue-600/20'
-            : 'bg-white/80 border-gray-200 hover:bg-gray-100'}`}
+          ${
+            isDark
+              ? "bg-black/80 border-blue-500/30 hover:bg-blue-600/20"
+              : "bg-white/80 border-gray-200 hover:bg-gray-100"
+          }`}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
@@ -180,20 +244,24 @@ export default function LandingPage() {
         whileTap={{ scale: 0.95 }}
         aria-label="Toggle theme"
       >
-        {isDark
-          ? <Sun className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
-          : <Moon className="w-4 h-4 text-blue-500 group-hover:text-blue-600 transition-colors" />}
+        {isDark ? (
+          <Sun className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+        ) : (
+          <Moon className="w-4 h-4 text-blue-500 group-hover:text-blue-600 transition-colors" />
+        )}
       </motion.button>
 
       {/* Scroll % */}
       <motion.div
         className={`fixed bottom-6 left-6 z-[10000] backdrop-blur-md rounded-full px-3 py-1.5 border shadow-lg
-          ${isDark ? 'bg-black/80 border-blue-500/30' : 'bg-white/80 border-gray-200'}`}
+          ${isDark ? "bg-black/80 border-blue-500/30" : "bg-white/80 border-gray-200"}`}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
       >
-        <span className={`text-xs font-mono ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>
+        <span
+          className={`text-xs font-mono ${isDark ? "text-blue-400" : "text-blue-500"}`}
+        >
           {Math.round(scrollProgress)}%
         </span>
       </motion.div>
@@ -204,9 +272,11 @@ export default function LandingPage() {
           <motion.button
             onClick={scrollToTop}
             className={`fixed bottom-24 left-6 z-[10000] backdrop-blur-md rounded-full p-2.5 border shadow-lg group
-              ${isDark
-                ? 'bg-black/80 border-blue-500/30 hover:bg-blue-600/20'
-                : 'bg-white/80 border-gray-200 hover:bg-gray-100'}`}
+              ${
+                isDark
+                  ? "bg-black/80 border-blue-500/30 hover:bg-blue-600/20"
+                  : "bg-white/80 border-gray-200 hover:bg-gray-100"
+              }`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -215,27 +285,60 @@ export default function LandingPage() {
             whileTap={{ scale: 0.95 }}
             aria-label="Scroll to top"
           >
-            <ChevronUp className={`w-4 h-4 ${isDark ? 'text-blue-400 group-hover:text-blue-300' : 'text-blue-500 group-hover:text-blue-600'}`} />
+            <ChevronUp
+              className={`w-4 h-4 ${isDark ? "text-blue-400 group-hover:text-blue-300" : "text-blue-500 group-hover:text-blue-600"}`}
+            />
           </motion.button>
         )}
       </AnimatePresence>
 
       {/* Grain Overlay */}
       <div
-        className={`fixed inset-0 pointer-events-none z-[9999] ${isDark ? 'opacity-[0.02]' : 'opacity-[0.01]'}`}
-        style={{ backgroundImage: "url('/grain.png')", backgroundRepeat: 'repeat' }}
+        className={`fixed inset-0 pointer-events-none z-[9999] ${isDark ? "opacity-[0.02]" : "opacity-[0.01]"}`}
+        style={{
+          backgroundImage: "url('/grain.png')",
+          backgroundRepeat: "repeat",
+        }}
       />
 
       <style jsx global>{`
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: ${isDark ? '#000' : '#f3f4f6'}; border-left: 1px solid ${isDark ? 'rgba(59,130,246,0.15)' : 'rgba(59,130,246,0.1)'}; }
-        ::-webkit-scrollbar-thumb { background: ${isDark ? '#2563eb' : '#3b82f6'}; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: ${isDark ? '#3b82f6' : '#2563eb'}; box-shadow: 0 0 6px rgba(59,130,246,0.4); }
-        * { scrollbar-width: thin; scrollbar-color: ${isDark ? '#2563eb #000' : '#3b82f6 #f3f4f6'}; }
-        html { scroll-behavior: smooth; }
-        ::selection { background: rgba(37,99,235,0.3); color: white; }
-        button:focus-visible, a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
-        button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
+        ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+          background: ${isDark ? "#000" : "#f3f4f6"};
+          border-left: 1px solid
+            ${isDark ? "rgba(59,130,246,0.15)" : "rgba(59,130,246,0.1)"};
+        }
+        ::-webkit-scrollbar-thumb {
+          background: ${isDark ? "#2563eb" : "#3b82f6"};
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: ${isDark ? "#3b82f6" : "#2563eb"};
+          box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+        }
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: ${isDark ? "#2563eb #000" : "#3b82f6 #f3f4f6"};
+        }
+        html {
+          scroll-behavior: smooth;
+        }
+        ::selection {
+          background: rgba(37, 99, 235, 0.3);
+          color: white;
+        }
+        button:focus-visible,
+        a:focus-visible {
+          outline: 2px solid #3b82f6;
+          outline-offset: 2px;
+        }
+        button:focus:not(:focus-visible),
+        a:focus:not(:focus-visible) {
+          outline: none;
+        }
       `}</style>
     </div>
   );
