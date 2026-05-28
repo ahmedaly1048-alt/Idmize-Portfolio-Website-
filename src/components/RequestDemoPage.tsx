@@ -116,6 +116,23 @@ const RequestDemoPage = ({ theme = 'dark', onClose }: RequestDemoPageProps) => {
         }}
       />
 
+      {/* Network SVG Pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="networkPattern" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+              {[{cx:20,cy:20,r:1.5},{cx:60,cy:20,r:1},{cx:100,cy:20,r:1.5},{cx:20,cy:60,r:1},{cx:60,cy:60,r:2},{cx:100,cy:60,r:1},{cx:20,cy:100,r:1.5},{cx:60,cy:100,r:1},{cx:100,cy:100,r:1.5}].map((c,i) => (
+                <circle key={i} cx={c.cx} cy={c.cy} r={c.r} fill={isDark ? "rgba(59,130,246,0.15)" : "rgba(59,130,246,0.1)"} />
+              ))}
+              {[[20,20,60,20],[60,20,100,20],[20,20,20,60],[60,20,60,60],[100,20,100,60],[20,60,60,60],[60,60,100,60],[20,60,20,100],[60,60,60,100],[100,60,100,100],[20,100,60,100],[60,100,100,100]].map(([x1,y1,x2,y2],i) => (
+                <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={isDark ? "rgba(59,130,246,0.08)" : "rgba(59,130,246,0.05)"} strokeWidth="0.5"/>
+              ))}
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#networkPattern)"/>
+        </svg>
+      </div>
+
       {/* Back button */}
       <div className="sticky top-16 z-40 pointer-events-none">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pointer-events-auto">
