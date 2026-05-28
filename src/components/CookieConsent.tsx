@@ -7,8 +7,8 @@ import {
   setCookieConsent,
   resetCookieConsent,
   initializeEssentialCookies,
-} from '@/lib/cookieUtils';
-import { CookieConsent as ICookieConsent, cookieDescriptions } from '@/lib/cookieConfig';
+} from '../lib/cookieUtils';
+import { CookieConsent as ICookieConsent, cookieDescriptions } from '../lib/cookieConfig';
 
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = useState(false);

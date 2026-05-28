@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { isCookieTypeAllowed } from '@/lib/cookieUtils';
+import { isCookieTypeAllowed } from '../lib/cookieUtils';
 
 declare global {
   interface Window {
