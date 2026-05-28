@@ -1,21 +1,21 @@
 "use client";
 
-import Navbar from "../../components/Navbar";
-import Hero from "../../components/Hero";
-import LogoWall from "../../components/Logowall";
-import FeaturesList from "../../components/FeaturesList";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import LogoWall from "../components/Logowall";
+import FeaturesList from "../components/FeaturesList";
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { ChevronUp, Sparkles, ArrowRight, Sun, Moon } from "lucide-react";
-import ProductShowcase from "../../components/ProductShowcase";
-import StatsSection from "../../components/StatsSection";
-import JourneyPath from "../../components/JourneyPath";
-import ArchitectureSection from "../../components/ImageDisplaySection";
-import IDmizePlatform from "../../components/IDmizePlatform";
-import RequestDemoPage from "../../components/RequestDemoPage";
-import AboutPage from "../../components/AboutPage";
-import ContactSection from "../../components/ContactSection";
-import Footer from "../../components/Footer";
+import ProductShowcase from "../components/ProductShowcase";
+import StatsSection from "../components/StatsSection";
+import JourneyPath from "../components/JourneyPath";
+import ArchitectureSection from "../components/ImageDisplaySection";
+import IDmizePlatform from "../components/IDmizePlatform";
+import RequestDemoPage from "../components/RequestDemoPage";
+import AboutPage from "../components/AboutPage";
+import ContactSection from "../components/ContactSection";
+import Footer from "../components/Footer";
 
 type Page = "home" | "about" | "pricing";
 
