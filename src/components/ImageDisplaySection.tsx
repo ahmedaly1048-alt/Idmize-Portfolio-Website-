@@ -12,50 +12,49 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
 
   const features = [
     {
-      icon: <Lock className="w-5 h-5" />,
+      icon: <Lock className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "PII Masking",
       text: "Automatic sanitization of sensitive data before LLM processing."
     },
     {
-      icon: <ShieldCheck className="w-5 h-5" />,
+      icon: <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Compliance Shield",
       text: "Real-time enforcement of cybersecurity and governance policies."
     },
     {
-      icon: <Cpu className="w-5 h-5" />,
+      icon: <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Multi-LLM Core",
       text: "Seamlessly connect with Gemini, ChatGPT, and Private AIs."
     },
     {
-      icon: <Zap className="w-5 h-5" />,
+      icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Agentic Identity",
       text: "Unified identity management for organizations and AI agents."
     }
   ];
 
   const bgColor = isDark ? 'bg-black' : 'bg-gray-50';
-  const gridColor = isDark ? '#3b82f6' : '#60a5fa'; // Reverted to Blue
+  const gridColor = isDark ? '#3b82f6' : '#60a5fa';
   const gridOpacity = isDark ? 'opacity-[0.06]' : 'opacity-[0.08]';
   const titleColor = isDark ? 'text-white' : 'text-gray-900';
-  const accentColor = isDark ? 'text-blue-400' : 'text-blue-600'; // Reverted to Blue
+  const accentColor = isDark ? 'text-blue-400' : 'text-blue-600';
   const descriptionColor = isDark ? 'text-gray-400' : 'text-gray-600';
   const cardBg = isDark ? 'bg-white/[0.03]' : 'bg-white';
   const cardBorder = isDark ? 'border-white/10' : 'border-gray-200';
   const cardHoverBg = isDark ? 'hover:bg-white/[0.05]' : 'hover:bg-gray-50';
-  const cardHoverBorder = isDark ? 'hover:border-blue-500/30' : 'hover:border-blue-300'; // Reverted to Blue
-  const iconBg = isDark ? 'bg-blue-500/10' : 'bg-blue-100'; // Reverted to Blue
-  const iconColor = isDark ? 'text-blue-400' : 'text-blue-500'; // Reverted to Blue
-  const glowBg = isDark ? 'bg-blue-500/10' : 'bg-blue-400/15'; // Reverted to Blue
+  const cardHoverBorder = isDark ? 'hover:border-blue-500/30' : 'hover:border-blue-300';
+  const iconBg = isDark ? 'bg-blue-500/10' : 'bg-blue-100';
+  const iconColor = isDark ? 'text-blue-400' : 'text-blue-500';
+  const glowBg = isDark ? 'bg-blue-500/10' : 'bg-blue-400/15';
 
-  // Custom inline SVG texture mimicking an emerald rubber stamp ink bleed
   const stampGrungeStyle = {
     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E")`,
     mixBlendMode: isDark ? 'screen' as const : 'multiply' as const,
   };
 
   return (
-    <section className={`relative ${bgColor} py-20 overflow-hidden transition-colors duration-300`}>
-      {/* Background Grid - Blue */}
+    <section className={`relative ${bgColor} py-12 sm:py-16 md:py-20 overflow-hidden transition-colors duration-300`}>
+      {/* Background Grid */}
       <div 
         className={`absolute inset-0 pointer-events-none ${gridOpacity}`}
         style={{ 
@@ -64,27 +63,27 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
         }} 
       />
       
-      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
         {/* Section Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'} mb-6 mx-auto`}>
-            <Sparkles className={`w-3 h-3 ${accentColor}`} />
-            <span className={`text-[10px] font-medium uppercase tracking-wider ${accentColor}`}>Architecture</span>
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${isDark ? 'bg-white/[0.02] border border-white/5' : 'bg-white border border-gray-200 shadow-sm'} mb-4 sm:mb-6 mx-auto`}>
+            <Sparkles className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${accentColor}`} />
+            <span className={`text-[8px] sm:text-[9px] md:text-[10px] font-medium uppercase tracking-wider ${accentColor}`}>Architecture</span>
           </div>
 
-          <div className="flex flex-row flex-nowrap items-center justify-center gap-6 md:gap-10">
-            {/* Header text on single line (Blue accent) */}
-            <h2 className={`text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight ${titleColor} whitespace-nowrap`}>
+          {/* Responsive header - stack on mobile, keep original patent stamp size */}
+          <div className="flex flex-col md:flex-row flex-nowrap items-center justify-center gap-4 md:gap-6 lg:gap-10">
+            <h2 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight ${titleColor} text-center md:text-left`}>
               Enterprise-Grade <span className={accentColor}>AI Architecture</span>
             </h2>
 
-            {/* ── ISOLATED EMERALD PATENT PENDING STAMP ────────────────── */}
+            {/* ── ORIGINAL PATENT PENDING STAMP (SIZE PRESERVED) ── */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85, rotate: -15 }}
               whileInView={{ opacity: 0.85, scale: 1, rotate: -8 }}
@@ -115,43 +114,48 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             </motion.div>
           </div>
 
-          <p className={`${descriptionColor} max-w-2xl mx-auto text-sm leading-relaxed mt-8`}>
+          <p className={`${descriptionColor} max-w-2xl mx-auto text-xs sm:text-sm leading-relaxed mt-6 sm:mt-8 px-4`}>
             IDmize provides a secure intermediary layer between your organization and 
             powerful Large Language Models, ensuring data sovereignty at every step.
           </p>
         </motion.div>
 
         {/* Features Content Block */}
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-10 lg:gap-12">
           {/* Left Flow graphic area */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative flex justify-center w-full lg:w-1/2"
+            className="relative flex justify-center w-full lg:w-1/2 px-4 sm:px-0"
           >
             <div className={`absolute inset-0 rounded-full blur-[100px] ${glowBg}`} />
-            <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-4 max-w-md mx-auto`}>
-              <img src="/flow.png" alt="IDmize Architecture" className="relative z-10 w-full h-auto block drop-shadow-2xl" />
+            <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-3 sm:p-4 max-w-md mx-auto w-full`}>
+              <img 
+                src="/flow.png" 
+                alt="IDmize Architecture" 
+                className="relative z-10 w-full h-auto block drop-shadow-2xl" 
+              />
             </div>
           </motion.div>
 
-          {/* Right Cards grid (Blue highlights restored) */}
-          <div className="w-full lg:w-1/2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto lg:mx-0">
+          {/* Right Cards grid - responsive grid */}
+          <div className="w-full lg:w-1/2 px-4 sm:px-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-xl mx-auto lg:mx-0">
               {features.map((feature, index) => (
                 <motion.div 
                   key={index}
                   whileHover={{ y: -5 }}
-                  className={`group relative ${cardBg} border ${cardBorder} p-5 rounded-xl ${cardHoverBg} ${cardHoverBorder} transition-all duration-300`}
+                  transition={{ duration: 0.2 }}
+                  className={`group relative ${cardBg} border ${cardBorder} p-4 sm:p-5 rounded-xl ${cardHoverBg} ${cardHoverBorder} transition-all duration-300`}
                 >
                   <div className="relative">
-                    <div className={`mb-3 ${iconBg} w-8 h-8 flex items-center justify-center rounded-lg ${iconColor}`}>
+                    <div className={`mb-2 sm:mb-3 ${iconBg} w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg ${iconColor}`}>
                       {feature.icon}
                     </div>
-                    <h4 className={`${titleColor} font-semibold text-sm mb-1`}>{feature.title}</h4>
-                    <p className={`${descriptionColor} text-xs leading-relaxed`}>{feature.text}</p>
+                    <h4 className={`${titleColor} font-semibold text-xs sm:text-sm mb-1`}>{feature.title}</h4>
+                    <p className={`${descriptionColor} text-[10px] sm:text-xs leading-relaxed`}>{feature.text}</p>
                   </div>
                 </motion.div>
               ))}

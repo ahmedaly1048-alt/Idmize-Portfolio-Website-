@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { SiGoogle, SiMeta, SiOpenai, SiClaude, SiX } from "react-icons/si";
-// import { FaFacebook } from "react-icons/fa";
 
 interface LogoWallProps {
   theme?: "light" | "dark";
@@ -48,7 +47,6 @@ const aiModels = [
     hoverBg: "hover:border-gray-500/50 hover:bg-gray-500/5",
     iconHover: "group-hover:text-gray-300",
   },
- 
 ];
 
 const LogoWall = ({ theme = "dark" }: LogoWallProps) => {
@@ -64,43 +62,48 @@ const LogoWall = ({ theme = "dark" }: LogoWallProps) => {
 
   return (
     <section
-      className={`${bgColor} border-y ${borderColor} transition-colors duration-300 relative overflow-hidden`}
+      className={`${bgColor} border-y ${borderColor} transition-colors duration-300 relative overflow-hidden py-6 sm:py-8 lg:py-10`}
     >
-      {/* Subtle gradient background on hover - optional decorative element */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 lg:py-10">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-8">
-          {/* Label Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-6 xl:gap-8">
+          
+          {/* Label Section - Responsive */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:w-48 shrink-0"
+            className="lg:w-48 shrink-0 text-center lg:text-left"
           >
             <div className="flex flex-col gap-1.5">
+              <div className="inline-flex lg:block justify-center">
+                <p
+                  className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${labelColor}`}
+                >
+                  Multi-LLM Orchestration
+                </p>
+              </div>
               <p
-                className={`text-[10px] font-bold uppercase tracking-wider ${labelColor}`}
-              >
-                Multi-LLM Orchestration
-              </p>
-              <p
-                className={`text-xs font-medium leading-relaxed ${isDark ? "text-gray-400" : "text-gray-500"}`}
+                className={`text-[10px] sm:text-xs font-medium leading-relaxed max-w-xs mx-auto lg:mx-0 ${isDark ? "text-gray-400" : "text-gray-500"}`}
               >
                 Securing and automating compliance across:
               </p>
             </div>
           </motion.div>
 
-          {/* Vertical Divider */}
+          {/* Vertical Divider - Hidden on mobile/tablet, visible on desktop */}
           <div
             className={`hidden lg:block w-px h-10 ${isDark ? "bg-white/8" : "bg-gray-200"}`}
           />
 
-          {/* AI Model Tags Grid */}
+          {/* Horizontal Divider - Visible on mobile/tablet */}
+          <div
+            className={`lg:hidden w-full h-px ${isDark ? "bg-white/8" : "bg-gray-200"}`}
+          />
+
+          {/* AI Model Tags Grid - Fully Responsive */}
           <div className="flex-1">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-2.5">
               {aiModels.map((model, index) => {
                 const Icon = model.icon;
                 return (
@@ -119,49 +122,49 @@ const LogoWall = ({ theme = "dark" }: LogoWallProps) => {
                   >
                     <div
                       className={`
-                      flex items-center gap-2.5 px-3 py-2 rounded-lg
-                      border transition-all duration-300 cursor-pointer w-full
-                      ${cardBg} ${cardBorder} ${model.hoverBg}
-                      shadow-sm hover:shadow-md
-                    `}
+                        flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg
+                        border transition-all duration-300 cursor-pointer w-full
+                        ${cardBg} ${cardBorder} ${model.hoverBg}
+                        shadow-sm hover:shadow-md
+                      `}
                     >
-                      {/* Icon with enhanced hover effects */}
+                      {/* Icon with responsive sizing */}
                       <div
                         className={`
-                        relative transition-all duration-300 shrink-0
-                        ${isDark ? "text-gray-400" : "text-gray-500"}
-                        ${model.iconHover}
-                        group-hover:scale-110 group-hover:rotate-3
-                        transition-transform duration-300
-                      `}
+                          relative transition-all duration-300 shrink-0
+                          ${isDark ? "text-gray-400" : "text-gray-500"}
+                          ${model.iconHover}
+                          group-hover:scale-110 group-hover:rotate-3
+                          transition-transform duration-300
+                        `}
                       >
-                        <Icon size={18} />
+                        <Icon size={16} className="sm:w-[18px] sm:h-[18px]" />
                       </div>
 
-                      {/* Text Content */}
+                      {/* Text Content - Responsive */}
                       <div className="flex flex-col flex-1 min-w-0">
                         <span
                           className={`
-                          text-[11px] font-semibold leading-tight 
-                          transition-all duration-300 truncate
-                          ${nameColor} group-hover:tracking-wide
-                        `}
+                            text-[10px] sm:text-[11px] font-semibold leading-tight 
+                            transition-all duration-300 truncate
+                            ${nameColor} group-hover:tracking-wide
+                          `}
                         >
                           {model.name}
                         </span>
                         <span
                           className={`
-                          text-[8px] leading-tight mt-0.5 font-mono 
-                          transition-all duration-300 truncate tracking-wide
-                          ${tagColor} group-hover:opacity-80
-                        `}
+                            text-[7px] sm:text-[8px] leading-tight mt-0.5 font-mono 
+                            transition-all duration-300 truncate tracking-wide
+                            ${tagColor} group-hover:opacity-80
+                          `}
                         >
                           {model.label}
                         </span>
                       </div>
 
                       {/* Subtle shine effect on hover */}
-                      <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
                         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                       </div>
                     </div>
@@ -172,6 +175,15 @@ const LogoWall = ({ theme = "dark" }: LogoWallProps) => {
           </div>
         </div>
       </div>
+
+      {/* Add responsive styles for extra small screens */}
+      <style jsx>{`
+        @media (min-width: 480px) {
+          .xs\\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
     </section>
   );
 };
