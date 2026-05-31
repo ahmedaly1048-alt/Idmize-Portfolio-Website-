@@ -1,7 +1,8 @@
-'use client';
+"use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Cpu, Zap, Lock, Sparkles } from 'lucide-react';
+// Updated icons for architectural clarity
+import { ShieldCheck, Network, EyeOff, Fingerprint, Sparkles } from 'lucide-react';
 
 interface ArchitectureSectionProps {
   theme?: 'light' | 'dark';
@@ -12,22 +13,26 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
 
   const features = [
     {
-      icon: <Lock className="w-4 h-4 sm:w-5 sm:h-5" />,
+      // EyeOff instantly conveys data hiding/sanitization
+      icon: <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "PII Masking",
       text: "Automatic sanitization of sensitive data before LLM processing."
     },
     {
+      // ShieldCheck is perfect for policy compliance enforcement
       icon: <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Compliance Shield",
       text: "Real-time enforcement of cybersecurity and governance policies."
     },
     {
-      icon: <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />,
+      // Network demonstrates connecting and routing between multiple systems
+      icon: <Network className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Multi-LLM Core",
       text: "Seamlessly connect with Gemini, ChatGPT, and Private AIs."
     },
     {
-      icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
+      // Fingerprint signals robust, unique identity cryptographic primitives
+      icon: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5" />,
       title: "Agentic Identity",
       text: "Unified identity management for organizations and AI agents."
     }

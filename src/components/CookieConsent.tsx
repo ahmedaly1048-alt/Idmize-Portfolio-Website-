@@ -20,13 +20,16 @@ export default function CookieConsent() {
   });
 
   useEffect(() => {
+    // Initialize or read state records
     const consent = getCookieConsent();
     if (!consent) {
       initializeEssentialCookies();
-      setShowBanner(true);
     } else {
       setCookies(consent);
     }
+    
+    // Explicit Override: Force banner visibility on every single initialization/page load
+    setShowBanner(true);
   }, []);
 
   const handleAcceptAll = () => {
@@ -82,14 +85,14 @@ export default function CookieConsent() {
 
   return (
     <div className="fixed inset-0 z-[10002] flex items-center justify-center pointer-events-none p-4 sm:p-6">
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" />
+      {/* Backdrop Surface */}
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-md pointer-events-auto" />
 
       <style>{`
         @keyframes scaleIn {
           from {
             opacity: 0;
-            transform: scale(0.95) translateY(10px);
+            transform: scale(0.96) translateY(12px);
           }
           to {
             opacity: 1;
@@ -99,7 +102,7 @@ export default function CookieConsent() {
         @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: scale(0.98);
+            transform: scale(0.99);
           }
           to {
             opacity: 1;
@@ -110,85 +113,84 @@ export default function CookieConsent() {
           animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .details-animate {
-          animation: fadeIn 0.25s ease-out;
+          animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
       `}</style>
 
       <div className="pointer-events-auto w-full max-w-md banner-animate relative z-10">
-        {/* Main Card - Sleek IDmize Style */}
-        <div className="relative bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 shadow-2xl overflow-hidden">
-          {/* Top accent line */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+        {/* Main Governance Layer Panel */}
+        <div className="relative bg-zinc-950/95 backdrop-blur-xl rounded-xl border border-zinc-800 shadow-[0_0_50px_0_rgba(0,0,0,0.8)] overflow-hidden">
+          {/* Cryptographic Top Accent Scanning Strip */}
+          <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
 
-          <div className="relative p-5">
-            {/* Header */}
+          <div className="relative p-6">
+            {/* Header Identity Row */}
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                  <Cookie className="w-4 h-4 text-blue-400" />
+                  <Cookie className="w-4 h-4 text-blue-400 stroke-[1.5]" />
                 </div>
                 <div>
-                  <h2 className="text-sm font-semibold text-white">
-                    Cookie Preferences
+                  <h2 className="text-xs font-semibold tracking-wide uppercase font-mono text-zinc-200">
+                    Data Privacy & Cookies
                   </h2>
                 </div>
               </div>
               <button
                 onClick={() => setShowBanner(false)}
-                className="text-gray-500 hover:text-gray-300 transition-all p-1 rounded-lg hover:bg-white/5"
+                className="text-zinc-500 hover:text-zinc-300 transition-colors p-1.5 rounded-lg hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800"
               >
                 <X size={14} />
               </button>
             </div>
 
-            {/* Description */}
-            <p className="text-xs text-gray-400 leading-relaxed mb-4">
-              We use cookies to enhance your experience. Essential cookies are always active,
-              while optional cookies help us improve our site.
+            {/* Platform Intent Copy */}
+            <p className="text-xs text-zinc-400 leading-relaxed mb-5 font-normal">
+              IDmize platform instances utilize identity primitives. Essential data state components remain permanently active inside your local environment, while telemetry parameters require permission verification.
             </p>
 
-            {/* Toggle Details Button */}
+            {/* Preference Configuration Activation Switch */}
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="flex items-center gap-2 text-[10px] font-medium text-blue-400 hover:text-blue-300 transition-colors mb-4 group"
+              className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-blue-400 hover:text-blue-300 transition-colors mb-5 group"
             >
-              <Settings size={10} />
-              <span>{showDetails ? 'Hide preferences' : 'Customize preferences'}</span>
-              {showDetails ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
+              <Settings size={11} className="animate-[spin_4s_linear_infinite]" />
+              <span>{showDetails ? 'Conceal Preferences' : 'Configure Granular Preferences'}</span>
+              {showDetails ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
             </button>
 
-            {/* Details Section */}
+            {/* Granular Framework Parameters Checklist */}
             {showDetails && (
-              <div className="details-animate mb-5 space-y-2">
+              <div className="details-animate mb-5 space-y-2 max-h-[190px] overflow-y-auto pr-1 selection:bg-zinc-800">
                 {(Object.keys(cookieDescriptions) as Array<keyof typeof cookieDescriptions>).map(
                   (type) => (
                     <label
                       key={type}
-                      className="flex items-start gap-2.5 p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all cursor-pointer group border border-white/5 hover:border-white/10"
+                      className="flex items-start gap-3 p-3 rounded-lg bg-zinc-900/40 hover:bg-zinc-900/80 transition-all cursor-pointer group border border-zinc-900 hover:border-zinc-800"
                     >
                       <input
                         type="checkbox"
                         checked={cookies[type]}
                         onChange={() => handleToggleCookie(type)}
                         disabled={type === 'essential'}
-                        className={`mt-0.5 w-3.5 h-3.5 rounded border-2 flex-shrink-0 transition-all ${
+                        className={`mt-0.5 w-3.5 h-3.5 rounded border transition-all ${
                           type === 'essential'
-                            ? 'bg-blue-500/20 border-blue-500/40 cursor-not-allowed'
-                            : 'border-gray-500 bg-transparent cursor-pointer hover:border-blue-400'
-                        } ${cookies[type] && type !== 'essential' ? 'bg-blue-500 border-blue-500' : ''}`}
+                            ? 'bg-zinc-800 border-zinc-700 text-zinc-600 cursor-not-allowed'
+                            : 'border-zinc-700 bg-transparent cursor-pointer hover:border-blue-500'
+                        } ${cookies[type] && type !== 'essential' ? 'bg-blue-600 border-blue-500' : ''}`}
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-[11px] font-medium text-gray-300">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[11px] font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors">
                             {cookieDescriptions[type].title}
                           </span>
                           {type === 'essential' && (
-                            <span className="text-[7px] bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-full">
-                              Required
+                            <span className="text-[8px] font-mono tracking-wider bg-blue-500/10 text-blue-400 px-1.5 py-0.5 border border-blue-500/20 rounded">
+                              SYSTEM_MANDATORY
                             </span>
                           )}
                         </div>
-                        <p className="text-[9px] text-gray-500 leading-relaxed">
+                        <p className="text-[10px] text-zinc-500 group-hover:text-zinc-400 transition-colors leading-relaxed">
                           {cookieDescriptions[type].description}
                         </p>
                       </div>
@@ -198,19 +200,19 @@ export default function CookieConsent() {
               </div>
             )}
 
-            {/* Action Buttons */}
-            <div className="flex gap-2 justify-end">
+            {/* Transaction Execution Actions */}
+            <div className="flex gap-2 justify-end pt-2">
               {!showDetails ? (
                 <>
                   <button
                     onClick={handleRejectAll}
-                    className="px-3 py-1.5 text-[10px] font-medium text-gray-300 bg-white/5 hover:bg-white/10 rounded-lg transition-all border border-white/10"
+                    className="px-3.5 py-2 text-[10px] font-mono uppercase tracking-wider text-zinc-400 bg-zinc-900/50 hover:bg-zinc-900 hover:text-zinc-200 rounded-md transition-all border border-zinc-800 hover:border-zinc-700"
                   >
                     Reject
                   </button>
                   <button
                     onClick={handleAcceptAll}
-                    className="px-4 py-1.5 text-[10px] font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-all shadow-lg shadow-blue-600/20"
+                    className="px-4 py-2 text-[10px] font-mono uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-500 rounded-md transition-all shadow-md shadow-blue-600/10"
                   >
                     Accept All
                   </button>
@@ -219,24 +221,24 @@ export default function CookieConsent() {
                 <>
                   <button
                     onClick={() => setShowDetails(false)}
-                    className="px-3 py-1.5 text-[10px] font-medium text-gray-300 bg-white/5 hover:bg-white/10 rounded-lg transition-all border border-white/10"
+                    className="px-3.5 py-2 text-[10px] font-mono uppercase tracking-wider text-zinc-400 bg-zinc-900/50 hover:bg-zinc-900 rounded-md transition-all border border-zinc-800"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSavePreferences}
-                    className="px-4 py-1.5 text-[10px] font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-all"
+                    className="px-4 py-2 text-[10px] font-mono uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-500 rounded-md transition-all"
                   >
-                    Save
+                    Save Matrix
                   </button>
                 </>
               )}
             </div>
 
-            {/* Footer Note */}
-            <div className="mt-4 pt-3 border-t border-white/5">
-              <p className="text-[8px] text-gray-600 text-center">
-                You can change these settings anytime from our footer
+            {/* Audit Status Footer Ledger Indicator */}
+            <div className="mt-5 pt-3 border-t border-zinc-900 flex items-center justify-center">
+              <p className="text-[8px] font-mono text-zinc-600 tracking-wider">
+                // OVERRIDE ACTIVE: DISPLAY STATE RECORDED AS ALWAYS ON_OPEN
               </p>
             </div>
           </div>
