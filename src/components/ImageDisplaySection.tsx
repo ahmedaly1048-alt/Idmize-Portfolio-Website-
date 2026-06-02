@@ -138,7 +138,7 @@ const ArchitectureSection = ({ theme = 'dark' }: ArchitectureSectionProps) => {
             <div className={`absolute inset-0 rounded-full blur-[100px] ${glowBg}`} />
             <div className={`relative rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'} bg-gradient-to-br ${isDark ? 'from-white/[0.02] to-transparent' : 'from-gray-50 to-white'} backdrop-blur-sm p-3 sm:p-4 max-w-md mx-auto w-full`}>
               <img 
-                src="/flow.png" 
+                src="/flow2.png" 
                 alt="IDmize Architecture" 
                 className="relative z-10 w-full h-auto block drop-shadow-2xl" 
               />

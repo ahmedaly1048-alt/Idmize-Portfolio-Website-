@@ -218,7 +218,7 @@ export default function IDmizePlatform() {
       badge: "Zero-Knowledge",
       illustration: (
         <div className="relative w-44 h-16 flex items-center justify-between px-4">
-          <div className="w-7 h-7 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[9px] font-mono text-zinc-400">LLM</div>
+          <div className="w-7 h-7 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[9px] font-mono text-zinc-400">CORE</div>
           
           <div className="absolute inset-x-11 top-1/2 h-[1px] bg-zinc-900 -translate-y-1/2">
             <motion.div 
@@ -236,7 +236,7 @@ export default function IDmizePlatform() {
             <Lock size={14} strokeWidth={1.5} />
           </motion.div>
           
-          <div className="w-7 h-7 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[9px] font-mono text-zinc-400">CORE</div>
+          <div className="w-7 h-7 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center text-[9px] font-mono text-zinc-400">LLM</div>
         </div>
       )
     },
